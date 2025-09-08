@@ -5,3 +5,6 @@ sass styles.scss styles.css
 ```
 
 #00cc66
+
+Inpiration taken from https://nono.ma/about
+

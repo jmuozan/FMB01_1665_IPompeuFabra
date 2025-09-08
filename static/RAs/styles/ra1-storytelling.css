@@ -114,18 +114,17 @@ body {
 }
 
 h1 {
-  font-size: 3.5rem;
-  color: #222121;
-  font-family: "Mulish", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 700;
-  margin-bottom: 1.5rem;
+  font-size: 4rem;
+  color: #8500cc;
+  font-family: "Newsreader", serif;
+  font-weight: 600;
+  margin-bottom: 2rem;
   line-height: 1.1;
   text-align: center;
-  letter-spacing: -0.02em;
 }
 @media screen and (max-width: 768px) {
   h1 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
   }
 }
 @media screen and (max-width: 280px) {
@@ -135,54 +134,53 @@ h1 {
 }
 
 h2 {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   color: #222121;
-  font-family: "Mulish", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Newsreader", serif;
   font-weight: 600;
-  margin: 2.5rem 0 1.5rem 0;
+  margin: 3rem 0 2rem 0;
   line-height: 1.2;
-  letter-spacing: -0.01em;
 }
 @media screen and (max-width: 768px) {
   h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 }
 @media screen and (max-width: 280px) {
   h2 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 }
 
 h3 {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: #222121;
-  margin: 2rem 0 0.8rem 0;
+  margin: 2rem 0 1rem 0;
   font-weight: 600;
-  letter-spacing: -0.005em;
 }
 
 p {
-  font-size: 1.1rem;
-  color: rgba(34, 33, 33, 0.85);
-  line-height: 1.6;
-  margin-bottom: 1.2rem;
+  font-size: 1.2rem;
+  color: #222121;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
 }
 p.statement {
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.8rem;
+  font-weight: 600;
   text-align: center;
-  margin: 2.5rem 0;
-  color: rgba(34, 33, 33, 0.9);
+  margin: 3rem 0;
+  color: #8500cc;
 }
 @media screen and (max-width: 768px) {
   p.statement {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 }
 p.comment {
-  font-size: 0.9rem;
-  opacity: 0.6;
+  font-size: 1rem;
+  opacity: 0.7;
+  font-style: italic;
   text-align: center;
   margin: 1rem 0;
 }
@@ -270,32 +268,32 @@ blockquote p:last-child {
 
 .concept-card {
   background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  transition: border-color 0.2s ease;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(133, 0, 204, 0.1);
+  transition: all 0.3s ease;
 }
 .concept-card:hover {
-  border-color: rgba(133, 0, 204, 0.4);
+  border-color: rgba(133, 0, 204, 0.3);
+  box-shadow: 0 8px 25px rgba(133, 0, 204, 0.15);
 }
 .concept-card h3 {
-  color: #222121;
+  color: #8500cc;
   margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
 }
 .concept-card p, .concept-card li {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: rgba(34, 33, 33, 0.8);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 .concept-card ul {
-  margin: 0.8rem 0;
-  padding-left: 1.2rem;
+  margin: 1rem 0;
+  padding-left: 1.5rem;
 }
 .concept-card ul li {
-  margin: 0.3rem 0;
+  margin: 0.5rem 0;
 }
 
 .comparison-container {
@@ -351,10 +349,10 @@ blockquote p:last-child {
 
 .story-controls {
   position: fixed;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 2rem;
+  right: 2rem;
   display: flex;
-  gap: 0.8rem;
+  gap: 1rem;
   z-index: 1000;
 }
 @media screen and (max-width: 768px) {
@@ -368,29 +366,27 @@ blockquote p:last-child {
 }
 
 .btn {
-  padding: 0.7rem 1.2rem;
-  background: #222121;
+  padding: 0.8rem 1.5rem;
+  background: #8500cc;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 500;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
 }
 .btn:hover {
-  background: rgba(34, 33, 33, 0.8);
+  background: #fb4b4e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(133, 0, 204, 0.3);
 }
 .btn.secondary {
-  background: rgba(34, 33, 33, 0.7);
+  background: #222121;
 }
 .btn.secondary:hover {
-  background: rgba(34, 33, 33, 0.6);
-}
-
-body.presentation-mode .story-container .section-content {
-  padding: 3rem 2rem;
+  background: #fb4b4e;
 }
 
 hr {
