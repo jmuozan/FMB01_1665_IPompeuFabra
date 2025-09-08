@@ -80,19 +80,31 @@ class StorytellingExperience {
         case 'ArrowRight':
         case ' ':
           e.preventDefault();
+          if (!this.isPresentationMode) {
+            this.togglePresentationMode();
+          }
           this.navigateToSection(1);
           break;
         case 'ArrowUp':
         case 'ArrowLeft':
           e.preventDefault();
+          if (!this.isPresentationMode) {
+            this.togglePresentationMode();
+          }
           this.navigateToSection(-1);
           break;
         case 'Home':
           e.preventDefault();
+          if (!this.isPresentationMode) {
+            this.togglePresentationMode();
+          }
           this.goToSection(0);
           break;
         case 'End':
           e.preventDefault();
+          if (!this.isPresentationMode) {
+            this.togglePresentationMode();
+          }
           this.goToSection(this.sections.length - 1);
           break;
       }
@@ -165,13 +177,6 @@ class StorytellingExperience {
   }
 
   setupPresentationMode() {
-    const presentBtn = document.getElementById('presentBtn');
-    if (presentBtn) {
-      presentBtn.addEventListener('click', () => {
-        this.togglePresentationMode();
-      });
-    }
-
     // Listen for ESC key to exit presentation mode
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isPresentationMode) {
@@ -184,7 +189,6 @@ class StorytellingExperience {
     const navbar = document.querySelector('.navbar');
     const storyControls = document.querySelector('.story-controls');
     const navigationHint = document.querySelector('.navigation-hint');
-    const presentBtn = document.getElementById('presentBtn');
     
     this.isPresentationMode = !this.isPresentationMode;
     
@@ -194,7 +198,6 @@ class StorytellingExperience {
       storyControls.style.display = 'none';
       navigationHint.style.display = 'none';
       document.body.classList.add('presentation-mode');
-      presentBtn.innerHTML = '<i class="fas fa-compress"></i> Sortir Presentació';
       
       // Request fullscreen if supported
       if (document.documentElement.requestFullscreen) {
@@ -208,7 +211,6 @@ class StorytellingExperience {
       storyControls.style.display = 'flex';
       navigationHint.style.display = 'block';
       document.body.classList.remove('presentation-mode');
-      presentBtn.innerHTML = '<i class="fas fa-expand"></i> Mode Presentació';
       
       // Exit fullscreen if in fullscreen mode
       if (document.fullscreenElement) {
