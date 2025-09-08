@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="../styles/ra1.css" />
+    <title>RA1 - Digitalització Aplicada</title>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../../index.html" class="navbar__logo">FMB0_1665</a>
+        <div class="navbar__bars"><i class="fas fa-bars"></i></div>
+        <div class="navbar__menu">
+            <a href="ra1.html" class="navbar__menu--links">RA1</a>
+            <a href="ra2.html" class="navbar__menu--links">RA2</a>
+            <a href="ra3.html" class="navbar__menu--links">RA3</a>
+            <a href="ra4.html" class="navbar__menu--links">RA4</a>
+            <a href="ra5.html" class="navbar__menu--links">RA5</a>
+            <a href="ra6.html" class="navbar__menu--links">RA6</a>
+            <a href="../../static/info.html" class="navbar__menu--links" id="button">Info</a>
+        </div>
+    </nav>
+
+    <!-- Mode indicator -->
+    <div class="mode-indicator">
+        <span class="mode-text">Mode navegació</span>
+        <span class="mode-hint">Prem ↑↓ per canviar a mode presentació</span>
+    </div>
+
+    <!-- Content blocks -->
+    <div class="content-container" id="contentContainer">
+        <!-- Block 1: Title -->
+        <section class="content-block title-block" data-block="1">
+            <div class="block-content">
+                <h1>Repercussió de la digitalització en els sectors productius</h1>
+                <div class="block-subtitle">RA1 - Resultats d'Aprenentatge 1</div>
+            </div>
+        </section>
+
+        <!-- Block 2: Digitalització Concept -->
+        <section class="content-block concept-block" data-block="2">
+            <div class="block-content">
+                <h2>1.1 Digitalització</h2>
+                <div class="concept-grid">
+                    <div class="concept-item">
+                        <h3>Concepte</h3>
+                        <p>Transformació dels processos empresarials mitjançant tecnologies digitals</p>
+                    </div>
+                    <div class="concept-item">
+                        <h3>Components clau</h3>
+                        <ul>
+                            <li>Cloud/Núvol</li>
+                            <li>Big Data</li>
+                            <li>Intel·ligència Artificial</li>
+                        </ul>
+                    </div>
+                    <div class="concept-item">
+                        <h3>Implantació</h3>
+                        <p>Procés gradual d'integració tecnològica en l'estructura empresarial</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Block 3: IT vs OT -->
+        <section class="content-block comparison-block" data-block="3">
+            <div class="block-content">
+                <h2>1.2 Entorns IT i OT</h2>
+                <div class="comparison-container">
+                    <div class="comparison-side it-side">
+                        <h3>IT (Information Technology)</h3>
+                        <div class="tech-icon">💻</div>
+                        <ul>
+                            <li>Gestió d'informació</li>
+                            <li>Sistemes de gestió</li>
+                            <li>Aplicacions empresarials</li>
+                            <li>Bases de dades</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-divider">
+                        <div class="vs-indicator">VS</div>
+                    </div>
+                    <div class="comparison-side ot-side">
+                        <h3>OT (Operational Technology)</h3>
+                        <div class="tech-icon">⚙️</div>
+                        <ul>
+                            <li>Control de processos</li>
+                            <li>Sistemes SCADA</li>
+                            <li>Sensors industrials</li>
+                            <li>Automatització</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Block 4: Departments -->
+        <section class="content-block departments-block" data-block="4">
+            <div class="block-content">
+                <h2>1.3 Departaments IT típics</h2>
+                <div class="departments-grid">
+                    <div class="department-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Recursos Humans</h3>
+                        <p>Gestió de personal i nòmines</p>
+                    </div>
+                    <div class="department-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Finances</h3>
+                        <p>Comptabilitat i control financer</p>
+                    </div>
+                    <div class="department-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Vendes</h3>
+                        <p>CRM i gestió comercial</p>
+                    </div>
+                    <div class="department-card">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Operacions</h3>
+                        <p>ERP i gestió de processos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Block 5: Technologies -->
+        <section class="content-block technologies-block" data-block="5">
+            <div class="block-content">
+                <h2>1.4 Tecnologies de digitalització</h2>
+                <div class="tech-flow">
+                    <div class="tech-stage">
+                        <h3>Àrea Administrativa</h3>
+                        <div class="tech-items">
+                            <span class="tech-tag">ERP</span>
+                            <span class="tech-tag">CRM</span>
+                            <span class="tech-tag">BI</span>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="tech-stage">
+                        <h3>Connexió IT-OT</h3>
+                        <div class="tech-items">
+                            <span class="tech-tag">IoT</span>
+                            <span class="tech-tag">APIs</span>
+                            <span class="tech-tag">Cloud</span>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="tech-stage">
+                        <h3>Àrea Productiva</h3>
+                        <div class="tech-items">
+                            <span class="tech-tag">SCADA</span>
+                            <span class="tech-tag">MES</span>
+                            <span class="tech-tag">Sensors</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Block 6: Benefits -->
+        <section class="content-block benefits-block" data-block="6">
+            <div class="block-content">
+                <h2>1.5 Avantatges de la digitalització</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📈</div>
+                        <h3>Eficiència</h3>
+                        <p>Optimització de processos i reducció de temps</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💡</div>
+                        <h3>Innovació</h3>
+                        <p>Nous models de negoci i serveis</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💰</div>
+                        <h3>Reducció de costos</h3>
+                        <p>Automatització i eliminació de duplicitats</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎯</div>
+                        <h3>Millor presa de decisions</h3>
+                        <p>Dades en temps real i analítica avançada</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Block 7: Summary -->
+        <section class="content-block summary-block" data-block="7">
+            <div class="block-content">
+                <h2>Resum RA1</h2>
+                <div class="summary-content">
+                    <p>La digitalització transforma els sectors productius integrant tecnologies IT i OT per millorar l'eficiència, la innovació i la competitivitat empresarial.</p>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <strong>Conceptes clau:</strong> Cloud, Big Data, IA
+                        </div>
+                        <div class="key-point">
+                            <strong>Entorns:</strong> IT (informació) vs OT (operacions)
+                        </div>
+                        <div class="key-point">
+                            <strong>Beneficis:</strong> Eficiència, innovació, reducció costos
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Slide navigation (hidden by default) -->
+    <div class="slide-navigation" id="slideNavigation">
+        <button class="nav-btn prev-btn" id="prevBtn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="slide-counter" id="slideCounter">1 / 7</span>
+        <button class="nav-btn next-btn" id="nextBtn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Export PDF button -->
+    <div class="export-controls">
+        <button class="export-btn" id="exportBtn">
+            <i class="fas fa-file-pdf"></i>
+            Descarregar PDF
+        </button>
+    </div>
+
+    <script src="../scripts/ra1.js"></script>
+</body>
+</html>
