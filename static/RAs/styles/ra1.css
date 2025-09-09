@@ -420,3 +420,55 @@ hr {
     padding: 2rem;
   }
 }
+
+/* PDF Export Styles */
+.pdf-export {
+  background: white !important;
+}
+
+.pdf-export .story-container {
+  padding-top: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+.pdf-export .story-section {
+  page-break-before: auto;
+  page-break-after: auto;
+  page-break-inside: avoid;
+  min-height: 100vh;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.pdf-export .story-section.section-full {
+  page-break-before: always;
+}
+
+.pdf-export .slide {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+  
+  .story-section {
+    page-break-inside: avoid;
+    min-height: 100vh;
+  }
+  
+  .story-section.section-full {
+    page-break-before: always;
+  }
+}

@@ -177,9 +177,9 @@ class StorytellingExperience {
   }
 
   setupPresentationMode() {
-    // Listen for ESC key to exit presentation mode
+    // Listen for ESC and Q keys to exit presentation mode
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isPresentationMode) {
+      if ((e.key === 'Escape' || e.key.toLowerCase() === 'q') && this.isPresentationMode) {
         this.togglePresentationMode();
       }
     });
@@ -221,181 +221,259 @@ class StorytellingExperience {
 
   async exportToPDF() {
     const exportBtn = document.getElementById('exportBtn');
-    const originalText = exportBtn.innerHTML;
+    const originalText = exportBtn.textContent;
     
     try {
       // Show loading state
-      exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generant PDF...';
-      exportBtn.disabled = true;
+      exportBtn.textContent = 'Generant PDF...';
+      exportBtn.style.pointerEvents = 'none';
+      
+      // Ensure fonts are loaded before generating PDF
+      await this.ensureFontsLoaded();
 
       // Create presentation-style PDF (16:9 landscape)
       const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('landscape', 'mm', [297, 210]); // A4 landscape for presentation
+      const pdf = new jsPDF('landscape', 'mm', [297, 210]); // A4 landscape
       
-      // PDF dimensions for presentation slides
+      // PDF dimensions
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      const margin = 30;
+      const margin = 25;
       const contentWidth = pdfWidth - (margin * 2);
       
-      // Get all story sections to create slides
+      // Brand colors matching your CSS
+      const brandPurple = [133, 0, 204];
+      const brandRed = [251, 75, 78];
+      const darkGray = [34, 33, 33];
+      const lightGray = [247, 247, 247];
+      const textDark = [60, 60, 60];
+      
+      // Get all story sections
       const sections = Array.from(document.querySelectorAll('.story-section'));
       
       sections.forEach((section, index) => {
-        if (index > 0) pdf.addPage(); // Add new page for each section
+        if (index > 0) pdf.addPage();
         
-        let yPosition = margin + 20;
-        
-        // Check if it's a full section (title slide)
         const isFullSection = section.classList.contains('section-full');
         const isBlackSection = section.classList.contains('section-black');
+        const isLightSection = section.classList.contains('section-light');
+        const content = section.querySelector('.section-content') || section;
         
-        // Set background for black sections
+        // Set background color
         if (isBlackSection) {
-          pdf.setFillColor(34, 33, 33);
+          pdf.setFillColor(darkGray[0], darkGray[1], darkGray[2]);
+          pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
+        } else if (isLightSection) {
+          pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+          pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
+        } else {
+          pdf.setFillColor(255, 255, 255);
           pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
         }
         
-        const content = section.querySelector('.section-content') || section;
+        let yPosition = margin + 20;
         
-        // Extract and format title (H1)
+        // Title (H1) - Using Newsreader style
         const h1 = content.querySelector('h1');
         if (h1) {
           const text = h1.textContent.trim();
-          pdf.setFontSize(isFullSection ? 36 : 28);
-          pdf.setTextColor(isBlackSection ? 247 : 133, isBlackSection ? 247 : 0, isBlackSection ? 247 : 204);
+          pdf.setFont('times', 'bold'); // Times is closer to Newsreader than Helvetica
+          pdf.setFontSize(isFullSection ? 36 : 28); // Larger sizes to match HTML impact
+          pdf.setTextColor(isBlackSection ? 247 : brandPurple[0], isBlackSection ? 247 : brandPurple[1], isBlackSection ? 247 : brandPurple[2]);
           
           const lines = pdf.splitTextToSize(text, contentWidth);
-          const textHeight = lines.length * 12;
-          const startY = isFullSection ? (pdfHeight - textHeight) / 2 : yPosition;
+          const textHeight = lines.length * (isFullSection ? 14 : 10);
           
-          pdf.text(lines, pdfWidth / 2, startY, { align: 'center' });
-          yPosition = startY + textHeight + 20;
+          if (isFullSection) {
+            // Center vertically for full sections
+            const startY = (pdfHeight - textHeight) / 2;
+            pdf.text(lines, pdfWidth / 2, startY, { align: 'center' });
+            yPosition = startY + textHeight + 30;
+          } else {
+            pdf.text(lines, margin, yPosition);
+            yPosition += textHeight + 25;
+          }
         }
         
-        // Extract subtitles and statements
+        // Statement paragraphs (subtitle style) - Using Mulish style
         const statements = content.querySelectorAll('p.statement');
         statements.forEach(stmt => {
           const text = stmt.textContent.trim();
           if (text) {
-            pdf.setFontSize(18);
-            pdf.setTextColor(isBlackSection ? 200 : 133, isBlackSection ? 200 : 0, isBlackSection ? 200 : 204);
+            pdf.setFont('helvetica', 'normal'); // Helvetica is closest to Mulish
+            pdf.setFontSize(18); // Slightly larger for better readability
+            pdf.setTextColor(isBlackSection ? 200 : brandPurple[0], isBlackSection ? 200 : brandPurple[1], isBlackSection ? 200 : brandPurple[2]);
             
             const lines = pdf.splitTextToSize(text, contentWidth);
-            pdf.text(lines, pdfWidth / 2, yPosition, { align: 'center' });
-            yPosition += lines.length * 8 + 15;
+            const startX = isFullSection ? pdfWidth / 2 : margin;
+            const align = isFullSection ? 'center' : 'left';
+            
+            pdf.text(lines, startX, yPosition, { align: align });
+            yPosition += lines.length * 7 + 20;
           }
         });
         
-        // Extract and format subtitles (H2)
+        // Comments (small gray text) - Using Mulish light
+        const comments = content.querySelectorAll('p.comment');
+        comments.forEach(comment => {
+          const text = comment.textContent.trim();
+          if (text) {
+            pdf.setFont('helvetica', 'normal'); // Helvetica normal for Mulish light
+            pdf.setFontSize(12);
+            pdf.setTextColor(isBlackSection ? 180 : 120, isBlackSection ? 180 : 120, isBlackSection ? 180 : 120);
+            
+            const lines = pdf.splitTextToSize(text, contentWidth);
+            const startX = isFullSection ? pdfWidth / 2 : margin;
+            const align = isFullSection ? 'center' : 'left';
+            
+            pdf.text(lines, startX, yPosition, { align: align });
+            yPosition += lines.length * 5 + 15;
+          }
+        });
+        
+        // H2 subtitles - Using Mulish bold
         const h2 = content.querySelector('h2');
         if (h2) {
           const text = h2.textContent.trim();
-          pdf.setFontSize(24);
-          pdf.setTextColor(isBlackSection ? 247 : 34, isBlackSection ? 247 : 33, isBlackSection ? 247 : 33);
+          pdf.setFont('helvetica', 'bold'); // Helvetica bold for Mulish bold
+          pdf.setFontSize(22); // Slightly larger for better hierarchy
+          pdf.setTextColor(isBlackSection ? 247 : textDark[0], isBlackSection ? 247 : textDark[1], isBlackSection ? 247 : textDark[2]);
           
           const lines = pdf.splitTextToSize(text, contentWidth);
-          pdf.text(lines, pdfWidth / 2, yPosition, { align: 'center' });
-          yPosition += lines.length * 10 + 20;
+          pdf.text(lines, margin, yPosition);
+          yPosition += lines.length * 8 + 20;
         }
         
-        // Extract main content paragraphs
-        const paragraphs = content.querySelectorAll('p:not(.statement):not(.comment)');
-        paragraphs.forEach(p => {
-          const text = p.textContent.trim();
-          if (text && yPosition < pdfHeight - 50) {
-            pdf.setFontSize(14);
-            pdf.setTextColor(isBlackSection ? 220 : 34, isBlackSection ? 220 : 33, isBlackSection ? 220 : 33);
+        // H3 subtitles - Using Mulish bold
+        const h3Elements = content.querySelectorAll('h3');
+        h3Elements.forEach(h3 => {
+          if (!h3.closest('.concept-card')) { // Skip h3 inside cards, handle them separately
+            const text = h3.textContent.trim();
+            pdf.setFont('helvetica', 'bold'); // Helvetica bold for Mulish bold
+            pdf.setFontSize(16);
+            pdf.setTextColor(isBlackSection ? 220 : brandPurple[0], isBlackSection ? 220 : brandPurple[1], isBlackSection ? 220 : brandPurple[2]);
             
             const lines = pdf.splitTextToSize(text, contentWidth);
             pdf.text(lines, margin, yPosition);
-            yPosition += lines.length * 6 + 12;
+            yPosition += lines.length * 6 + 15;
           }
         });
         
-        // Extract key points from cards
+        // Regular paragraphs - Using Mulish normal
+        const paragraphs = content.querySelectorAll('p:not(.statement):not(.comment)');
+        paragraphs.forEach(p => {
+          const text = p.textContent.trim();
+          if (text && yPosition < pdfHeight - 60) {
+            pdf.setFont('helvetica', 'normal'); // Helvetica for body text (Mulish)
+            pdf.setFontSize(13); // Slightly larger for better readability
+            pdf.setTextColor(isBlackSection ? 200 : textDark[0], isBlackSection ? 200 : textDark[1], isBlackSection ? 200 : textDark[2]);
+            
+            const lines = pdf.splitTextToSize(text, contentWidth - 20);
+            pdf.text(lines, margin, yPosition);
+            yPosition += lines.length * 5 + 12;
+          }
+        });
+        
+        // Concept cards
         const conceptCards = content.querySelectorAll('.concept-card');
-        if (conceptCards.length > 0 && yPosition < pdfHeight - 100) {
-          let cardY = yPosition;
-          const cardWidth = (contentWidth - 40) / Math.min(conceptCards.length, 3);
+        if (conceptCards.length > 0 && yPosition < pdfHeight - 80) {
+          const cardsPerRow = Math.min(conceptCards.length, 3);
+          const cardWidth = (contentWidth - (cardsPerRow - 1) * 15) / cardsPerRow;
+          const startY = yPosition;
           
           conceptCards.forEach((card, cardIndex) => {
-            if (cardIndex >= 3) return; // Limit to 3 cards per slide
+            if (cardIndex >= 6) return; // Limit cards per slide
             
-            const cardX = margin + (cardIndex * (cardWidth + 20));
-            const h3 = card.querySelector('h3');
-            const cardText = card.querySelector('p') || card;
+            const row = Math.floor(cardIndex / 3);
+            const col = cardIndex % 3;
+            const cardX = margin + (col * (cardWidth + 15));
+            const cardY = startY + (row * 70);
             
-            if (h3) {
-              pdf.setFontSize(16);
-              pdf.setTextColor(133, 0, 204);
-              const title = h3.textContent.trim();
-              pdf.text(title, cardX, cardY);
-              cardY += 10;
+            // Card background
+            pdf.setFillColor(isBlackSection ? 45 : 250, isBlackSection ? 45 : 250, isBlackSection ? 45 : 250);
+            pdf.roundedRect(cardX - 5, cardY - 10, cardWidth + 10, 60, 3, 3, 'F');
+            
+            // Card title - Using Mulish bold
+            const cardH3 = card.querySelector('h3');
+            if (cardH3) {
+              pdf.setFont('helvetica', 'bold'); // Helvetica bold for card titles
+              pdf.setFontSize(14);
+              pdf.setTextColor(brandPurple[0], brandPurple[1], brandPurple[2]);
+              
+              const title = cardH3.textContent.trim();
+              const titleLines = pdf.splitTextToSize(title, cardWidth - 10);
+              pdf.text(titleLines, cardX, cardY);
             }
             
-            if (cardText && cardText !== h3) {
-              pdf.setFontSize(11);
-              pdf.setTextColor(60, 60, 60);
-              const text = cardText.textContent.trim();
-              const lines = pdf.splitTextToSize(text, cardWidth - 10);
-              pdf.text(lines, cardX, cardY);
+            // Card content - Using Mulish normal
+            const cardP = card.querySelector('p');
+            if (cardP) {
+              pdf.setFont('helvetica', 'normal'); // Helvetica normal for card content
+              pdf.setFontSize(10);
+              pdf.setTextColor(isBlackSection ? 180 : 80, isBlackSection ? 180 : 80, isBlackSection ? 180 : 80);
+              
+              const cardText = cardP.textContent.trim();
+              const contentLines = pdf.splitTextToSize(cardText, cardWidth - 10);
+              pdf.text(contentLines, cardX, cardY + 12);
             }
           });
           
-          yPosition = cardY + 40;
+          yPosition += Math.ceil(conceptCards.length / 3) * 70 + 20;
         }
         
-        // Extract lists
+        // Lists
         const lists = content.querySelectorAll('ul, ol');
         lists.forEach(list => {
-          if (yPosition < pdfHeight - 60) {
-            const items = Array.from(list.querySelectorAll('li')).slice(0, 6); // Limit items per slide
+          if (yPosition < pdfHeight - 50) {
+            const items = Array.from(list.querySelectorAll('li')).slice(0, 8);
             
             items.forEach(item => {
               const text = '• ' + item.textContent.trim();
-              pdf.setFontSize(12);
-              pdf.setTextColor(isBlackSection ? 200 : 60, isBlackSection ? 200 : 60, isBlackSection ? 200 : 60);
+              pdf.setFont('helvetica', 'normal'); // Helvetica for list items (Mulish)
+              pdf.setFontSize(11);
+              pdf.setTextColor(isBlackSection ? 200 : textDark[0], isBlackSection ? 200 : textDark[1], isBlackSection ? 200 : textDark[2]);
               
-              const lines = pdf.splitTextToSize(text, contentWidth - 20);
-              pdf.text(lines, margin + 10, yPosition);
-              yPosition += lines.length * 5 + 3;
+              const lines = pdf.splitTextToSize(text, contentWidth - 30);
+              pdf.text(lines, margin + 15, yPosition);
+              yPosition += lines.length * 4 + 3;
             });
-            yPosition += 10;
+            yPosition += 15;
           }
         });
         
-        // Extract blockquotes
+        // Blockquotes
         const quotes = content.querySelectorAll('blockquote');
         quotes.forEach(quote => {
           if (yPosition < pdfHeight - 40) {
             const text = quote.textContent.trim();
-            pdf.setFontSize(16);
-            pdf.setTextColor(100, 100, 100);
             
-            // Add quote styling
-            pdf.setDrawColor(133, 0, 204);
-            pdf.setLineWidth(2);
-            pdf.line(margin, yPosition - 5, margin + 5, yPosition - 5);
+            // Quote line
+            pdf.setDrawColor(brandPurple[0], brandPurple[1], brandPurple[2]);
+            pdf.setLineWidth(3);
+            pdf.line(margin, yPosition - 5, margin + 10, yPosition - 5);
             
-            const lines = pdf.splitTextToSize(text, contentWidth - 30);
-            pdf.text(lines, margin + 15, yPosition);
-            yPosition += lines.length * 8 + 15;
+            pdf.setFont('helvetica', 'oblique'); // Italic style for quotes
+            pdf.setFontSize(14);
+            pdf.setTextColor(isBlackSection ? 180 : 100, isBlackSection ? 180 : 100, isBlackSection ? 180 : 100);
+            
+            const lines = pdf.splitTextToSize(text, contentWidth - 40);
+            pdf.text(lines, margin + 20, yPosition);
+            yPosition += lines.length * 6 + 20;
           }
         });
         
-        // Add footer with slide number
+        // Footer - Using Mulish normal
+        pdf.setFont('helvetica', 'normal'); // Helvetica for footer text
         pdf.setFontSize(10);
         pdf.setTextColor(150, 150, 150);
         pdf.text(`${index + 1}`, pdfWidth - margin, pdfHeight - 15, { align: 'right' });
         
-        // Add title in footer for content slides
-        if (!isFullSection && h1) {
+        if (!isFullSection) {
           pdf.text('RA1 - Digitalització Aplicada', margin, pdfHeight - 15);
         }
       });
 
-      // Save PDF with presentation format
+      // Save PDF
       const fileName = `RA1_Presentacio_Digitalitzacio_${new Date().toISOString().split('T')[0]}.pdf`;
       pdf.save(fileName);
       
@@ -404,8 +482,27 @@ class StorytellingExperience {
       alert('Error generant el PDF. Si us plau, torna-ho a intentar.');
     } finally {
       // Reset button
-      exportBtn.innerHTML = originalText;
-      exportBtn.disabled = false;
+      exportBtn.textContent = originalText;
+      exportBtn.style.pointerEvents = 'auto';
+    }
+  }
+
+  async ensureFontsLoaded() {
+    // Wait for Google Fonts to load before generating PDF
+    if (typeof FontFaceObserver !== 'undefined') {
+      try {
+        const mulish = new FontFaceObserver('Mulish');
+        const newsreader = new FontFaceObserver('Newsreader');
+        const kanit = new FontFaceObserver('Kanit');
+        
+        await Promise.all([
+          mulish.load(null, 3000),
+          newsreader.load(null, 3000),
+          kanit.load(null, 3000)
+        ]);
+      } catch (e) {
+        console.log('Some fonts may not have loaded completely');
+      }
     }
   }
 }
