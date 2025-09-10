@@ -3,14 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&display=swap"
-        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
@@ -31,20 +26,19 @@
         <a href="./static/RAs/pages/ra4.html" class="navbar__menu--links">RA4</a>
         <a href="./static/RAs/pages/ra5.html" class="navbar__menu--links">RA5</a>
         <a href="./static/RAs/pages/ra6.html" class="navbar__menu--links">RA6</a>
-        <a href="./static/info.html" class="navbar__menu--links" id="button">Info</a>
+        <a href="./static/info.html" class="navbar__menu--links">Info</a>
       </div>
     </nav>
 
     <div class="hero">
       <div class="hero__container">
-        <div class="hero__container--left">
-          <h1>Digitalització Aplicada al Sector Productiu</h1>
-          <h2>Institut Pompeu Fabra</h2>
-          <p>Curs 2025/26</p>
-          <button class="hero__container--btn"><a href="./static/content.html">Continguts</a></button>
+        <div class="hero__container--content">
+          <h1 class="hero__title">Digitalització Aplicada al Sector Productiu</h1>
+          <h2 class="hero__subtitle">Institut Pompeu Fabra</h2>
+          <p class="hero__text">Curs 2025/26</p>
         </div>
-        <div class="hero__container--right">
-          <canvas id="ascii-canvas" class="hero__container--img"></canvas>
+        <div class="hero__visual">
+          <canvas id="ascii-canvas" class="hero__canvas"></canvas>
           <p class="image-footnote">Font de la imatge: <a href="https://iaac.net/" target="_blank" rel="noopener noreferrer">IAAC - Institut d'Arquitectura Avançada de Catalunya</a></p>
         </div>
       </div>
