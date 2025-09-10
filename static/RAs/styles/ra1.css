@@ -114,6 +114,21 @@ body {
   align-items: center;
   margin: 0;
 }
+.navbar__bars {
+  opacity: 0;
+}
+@media (max-width: 1023px) { /* portable */
+  .navbar__bars {
+    color: var(--color-grey-dark);
+    opacity: 1;
+    position: absolute;
+    top: 22px;
+    right: var(--padding-base);
+    font-size: 32px;
+    cursor: pointer;
+  }
+}
+
 .navbar__menu {
   display: flex;
   align-items: center;
@@ -123,6 +138,22 @@ body {
 @media (max-width: 1023px) { /* portable */
   .navbar__menu {
     display: none;
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    right: 0;
+    background: var(--color-bg);
+    flex-direction: column;
+    border-bottom: 1px solid var(--color-grey-light);
+    padding: 20px 0;
+    z-index: 999;
+  }
+  .navbar__menu.active {
+    display: flex;
+  }
+  .navbar__menu--links {
+    padding: 15px 0;
+    font-size: 18px;
   }
 }
 .navbar__menu--links {
