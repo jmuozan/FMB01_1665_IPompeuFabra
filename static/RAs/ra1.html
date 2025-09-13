@@ -7,8 +7,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.3.0/fontfaceobserver.standalone.js"></script>
     <link rel="stylesheet" href="styles/ra1.css" />
     <title>RA1 - Digitalització Aplicada</title>
 </head>
@@ -28,295 +26,262 @@
         </div>
     </nav>
 
-    <!-- Story Controls -->
-    <div class="story-controls" style="display: none;">
+    <!-- Slideshow Controls -->
+    <div class="slideshow-controls">
+        <button class="control-btn prev-btn" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">12</span>
+        </div>
+        <button class="control-btn next-btn" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+
+    <!-- Slideshow Container -->
+    <div class="slideshow-container" id="slideshowContainer">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-slide="1">
+            <div class="slide-content slide-center">
+                <h1 class="slide-title">Repercussió de la digitalització en els sectors productius</h1>
+                <p class="slide-subtitle">RA1 - Resultats d'Aprenentatge 1</p>
+                <p class="slide-meta">Institut Pompeu Fabra — Curs 2025/26</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Introduction -->
+        <div class="slide" data-slide="2">
+            <div class="slide-content">
+                <h2>Introducció</h2>
+                <div class="slide-text">
+                    <p>La digitalització no és només una tendència tecnològica, sinó una transformació fonamental de com les empreses operen, innoven i competeixen en l'era digital.</p>
+                    <div class="slide-highlight">
+                        <p><strong>Digitalització = Transformació</strong></p>
+                    </div>
+                    <p>Aquest procés implica la integració de tecnologies digitals en tots els aspectes de l'activitat empresarial, des de la gestió administrativa fins als processos productius més complexos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Concept Title -->
+        <div class="slide slide-dark" data-slide="3">
+            <div class="slide-content slide-center">
+                <h1>1.1 Concepte de Digitalització</h1>
+            </div>
+        </div>
+
+        <!-- Slide 4: What is Digitalization -->
+        <div class="slide" data-slide="4">
+            <div class="slide-content">
+                <h2>Què entenem per digitalització?</h2>
+                <div class="slide-text">
+                    <p>La digitalització és el procés de transformació dels processos empresarials mitjançant tecnologies digitals per optimitzar l'eficiència operativa i crear nous models de valor.</p>
+                    
+                    <div class="slide-grid">
+                        <div class="slide-card">
+                            <h3>Transformació de Processos</h3>
+                            <p>Conversió de processos analògics i manuals en sistemes digitals automatitzats.</p>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Integració Tecnològica</h3>
+                            <p>Connexió de sistemes per crear ecosistemes digitals coherents.</p>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Innovació Contínua</h3>
+                            <p>Capacitat d'adaptar-se ràpidament mitjançant solucions àgils.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Key Components -->
+        <div class="slide" data-slide="5">
+            <div class="slide-content">
+                <h2>Components clau de la digitalització</h2>
+                <div class="slide-text">
+                    <ul class="slide-list">
+                        <li><strong>Cloud Computing:</strong> Accés a recursos computacionals sota demanda</li>
+                        <li><strong>Big Data Analytics:</strong> Processament i anàlisi de grans volums de dades</li>
+                        <li><strong>Intel·ligència Artificial:</strong> Automatització de decisions complexes</li>
+                        <li><strong>Internet of Things (IoT):</strong> Connexió d'objectes físics a la xarxa</li>
+                        <li><strong>Robòtica i Automatització:</strong> Optimització de tasques repetitives</li>
+                    </ul>
+
+                    <blockquote class="slide-quote">
+                        "La digitalització no és només sobre tecnologia, sinó sobre reimaginar com fem negocis en l'era digital."
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: IT vs OT Title -->
+        <div class="slide slide-dark" data-slide="6">
+            <div class="slide-content slide-center">
+                <h1>1.2 Entorns IT i OT</h1>
+                <p class="slide-subtitle">La convergència entre sistemes d'informació i operacionals</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: IT vs OT Comparison -->
+        <div class="slide" data-slide="7">
+            <div class="slide-content">
+                <h2>Dos mons que es connecten</h2>
+                <div class="slide-text">
+                    <p>Tradicionalment, les empreses han operat amb dos entorns tecnològics separats: IT per gestionar la informació, i OT per controlar els processos físics.</p>
+                    
+                    <div class="slide-comparison">
+                        <div class="slide-card">
+                            <h3>IT - Information Technology</h3>
+                            <ul>
+                                <li>Gestió d'informació empresarial</li>
+                                <li>Sistemes de gestió (ERP, CRM)</li>
+                                <li>Aplicacions corporatives</li>
+                                <li>Bases de dades i analytics</li>
+                                <li>Xarxes de comunicació</li>
+                            </ul>
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="slide-card">
+                            <h3>OT - Operational Technology</h3>
+                            <ul>
+                                <li>Control de processos industrials</li>
+                                <li>Sistemes SCADA</li>
+                                <li>Sensors i actuadors</li>
+                                <li>Automatització industrial</li>
+                                <li>Sistemes de control en temps real</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: IT Departments -->
+        <div class="slide" data-slide="8">
+            <div class="slide-content">
+                <h2>1.3 Departaments IT típics</h2>
+                <div class="slide-text">
+                    <p>Cada departament utilitza sistemes IT específics:</p>
+                    
+                    <div class="slide-grid">
+                        <div class="slide-card">
+                            <h3>Recursos Humans</h3>
+                            <p>Sistemes de gestió de personal, nòmines, formació i desenvolupament professional.</p>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Finances</h3>
+                            <p>Software de comptabilitat, control financer, facturació i anàlisi econòmica.</p>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Vendes i Màrqueting</h3>
+                            <p>CRM, seguiment de clients, campanyes digitals i anàlisi de vendes.</p>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Operacions</h3>
+                            <p>ERP, logística, cadena de subministrament i optimització operacional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Technologies Title -->
+        <div class="slide slide-light" data-slide="9">
+            <div class="slide-content slide-center">
+                <h1>1.4 Tecnologies de digitalització</h1>
+                <p class="slide-subtitle">L'ecosistema tecnològic que impulsa la transformació digital</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Technology Map -->
+        <div class="slide" data-slide="10">
+            <div class="slide-content">
+                <h2>Mapa tecnològic de la digitalització</h2>
+                <div class="slide-text">
+                    <p>Les tecnologies s'organitzen en tres àmbits principals:</p>
+                    
+                    <div class="slide-grid">
+                        <div class="slide-card">
+                            <h3>Àrea Administrativa</h3>
+                            <ul>
+                                <li>ERP (Enterprise Resource Planning)</li>
+                                <li>CRM (Customer Relationship Management)</li>
+                                <li>BI (Business Intelligence)</li>
+                                <li>Sistemes de gestió documental</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Connexió IT-OT</h3>
+                            <ul>
+                                <li>IoT (Internet of Things)</li>
+                                <li>APIs d'integració</li>
+                                <li>Plataformes Cloud híbrides</li>
+                                <li>Edge Computing</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Àrea Productiva</h3>
+                            <ul>
+                                <li>SCADA (Supervisory Control)</li>
+                                <li>MES (Manufacturing Execution)</li>
+                                <li>Sensors industrials IoT</li>
+                                <li>Robòtica i automatització</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Benefits Title -->
+        <div class="slide slide-dark" data-slide="11">
+            <div class="slide-content slide-center">
+                <h1>1.5 Avantatges de la digitalització</h1>
+            </div>
+        </div>
+
+        <!-- Slide 12: Benefits and Summary -->
+        <div class="slide" data-slide="12">
+            <div class="slide-content">
+                <h2>Transformació amb impacte mesurable</h2>
+                <div class="slide-text">
+                    <div class="slide-grid">
+                        <div class="slide-card">
+                            <h3>Eficiència Operacional</h3>
+                            <p>Reducció de fins al 30% en temps d'execució mitjançant automatització intel·ligent.</p>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Innovació i Agilitat</h3>
+                            <p>Desenvolupament accelerat i resposta ràpida als canvis del mercat.</p>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Reducció de Costos</h3>
+                            <p>Estalvis del 15-25% en costos operacionals amb millora de qualitat.</p>
+                        </div>
+                        <div class="slide-card">
+                            <h3>Decisions Basades en Dades</h3>
+                            <p>Informació en temps real per decisions estratègiques i analítica predictiva.</p>
+                        </div>
+                    </div>
+
+                    <blockquote class="slide-quote">
+                        "Les empreses digitalitzades són 23% més rendibles i creixen 12% més ràpid que les seves competidores tradicionals."
+                        <cite>— Estudi MIT Sloan Management Review, 2023</cite>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Navigation Hint -->
     <div class="navigation-hint">
-        ← Usa les tecles de direcció per navegar →
+        <p>Utilitza les fletxes ← → o fes clic als botons per navegar</p>
     </div>
 
-    <!-- Story Container -->
-    <div class="story-container">
-
-        <!-- Title Section -->
-        <section class="story-section section-full" data-section="title">
-            <div class="section-content">
-                <h1 class="slide">Repercussió de la digitalització en els sectors productius</h1>
-                <p class="statement slide">RA1 - Resultats d'Aprenentatge 1</p>
-                <p class="comment slide">Institut Pompeu Fabra — Curs 2025/26</p>
-                <p class="slide">Explorem com la digitalització transforma els sectors productius a través de la integració de tecnologies IT i OT.</p>
-            </div>
-        </section>
-
-        <!-- Introduction -->
-        <section class="story-section section-content" data-section="intro">
-            <p class="slide">La digitalització no és només una tendència tecnològica, sinó una transformació fonamental de com les empreses operen, innoven i competeixen en l'era digital.</p>
-            
-            <div class="visual-element slide">
-                <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #8500cc 0%, #fb4b4e 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: 600;">
-                    Digitalització = Transformació
-                </div>
-            </div>
-            
-            <p class="slide">Aquest procés implica la integració de tecnologies digitals en tots els aspectes de l'activitat empresarial, des de la gestió administrativa fins als processos productius més complexos.</p>
-        </section>
-
-        <!-- Black section for dramatic effect -->
-        <section class="story-section section-full section-black" data-section="concept-intro">
-            <div class="section-content">
-                <h1 class="slide">1.1 Concepte de Digitalització</h1>
-            </div>
-        </section>
-
-        <!-- Concept Details -->
-        <section class="story-section section-content" data-section="concept">
-            <h2 class="slide">Què entenem per digitalització?</h2>
-            
-            <p class="slide">La digitalització és el procés de transformació dels processos empresarials mitjançant tecnologies digitals per optimitzar l'eficiència operativa i crear nous models de valor.</p>
-
-            <div class="content-grid three-col slide">
-                <div class="concept-card">
-                    <h3>Transformació de Processos</h3>
-                    <p>Conversió de processos analògics i manuals en sistemes digitals automatitzats que milloren la velocitat i precisió.</p>
-                </div>
-                
-                <div class="concept-card">
-                    <h3>Integració Tecnològica</h3>
-                    <p>Connexió de sistemes, dispositius i plataformes per crear ecosistemes digitals coherents i eficients.</p>
-                </div>
-                
-                <div class="concept-card">
-                    <h3>Innovació Contínua</h3>
-                    <p>Capacitat d'adaptar-se ràpidament als canvis del mercat mitjançant solucions tecnològiques àgils.</p>
-                </div>
-            </div>
-
-            <h3 class="slide">Components clau de la digitalització</h3>
-            
-            <ul class="slide">
-                <li><strong>Cloud Computing:</strong> Accés a recursos computacionals sota demanda</li>
-                <li><strong>Big Data Analytics:</strong> Processament i anàlisi de grans volums de dades</li>
-                <li><strong>Intel·ligència Artificial:</strong> Automatització de decisions complexes</li>
-                <li><strong>Internet of Things (IoT):</strong> Connexió d'objectes físics a la xarxa</li>
-                <li><strong>Robòtica i Automatització:</strong> Optimització de tasques repetitives</li>
-            </ul>
-
-            <blockquote class="slide">
-                <p>"La digitalització no és només sobre tecnologia, sinó sobre reimaginar com fem negocis en l'era digital."</p>
-            </blockquote>
-        </section>
-
-        <!-- IT vs OT Section -->
-        <section class="story-section section-full section-black" data-section="it-ot-intro">
-            <div class="section-content">
-                <h1 class="slide">1.2 Entorns IT i OT</h1>
-                <p class="statement slide">La convergència entre sistemes d'informació i operacionals</p>
-            </div>
-        </section>
-
-        <section class="story-section section-content" data-section="it-ot">
-            <h2 class="slide">Dos mons que es connecten</h2>
-            
-            <p class="slide">Tradicionalment, les empreses han operat amb dos entorns tecnològics separats: IT (Information Technology) per gestionar la informació, i OT (Operational Technology) per controlar els processos físics.</p>
-
-            <div class="comparison-container slide">
-                <div class="concept-card">
-                    <h3>IT - Information Technology</h3>
-                    <ul>
-                        <li>Gestió d'informació empresarial</li>
-                        <li>Sistemes de gestió (ERP, CRM)</li>
-                        <li>Aplicacions corporatives</li>
-                        <li>Bases de dades i analytics</li>
-                        <li>Xarxes de comunicació</li>
-                        <li>Seguretat informàtica</li>
-                    </ul>
-                </div>
-                
-                <div class="vs-indicator">VS</div>
-                
-                <div class="concept-card">
-                    <h3>OT - Operational Technology</h3>
-                    <ul>
-                        <li>Control de processos industrials</li>
-                        <li>Sistemes SCADA</li>
-                        <li>Sensors i actuadors</li>
-                        <li>Automatització industrial</li>
-                        <li>Sistemes de control en temps real</li>
-                        <li>Maquinària i equipament</li>
-                    </ul>
-                </div>
-            </div>
-
-            <p class="slide">La digitalització promou la <strong>convergència IT-OT</strong>, creant sistemes integrats que combinen la gestió de la informació amb el control operacional.</p>
-
-            <div class="visual-element slide">
-                <div style="width: 100%; height: 200px; background: linear-gradient(90deg, #2541b2 0%, #8500cc 50%, #fb4b4e 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: 600;">
-                    IT ←→ Integració ←→ OT
-                </div>
-            </div>
-        </section>
-
-        <!-- Departments Section -->
-        <section class="story-section section-content" data-section="departments">
-            <h2 class="slide">1.3 Departaments IT típics</h2>
-            
-            <p class="slide">Cada departament de l'empresa utilitza sistemes IT específics per optimitzar les seves operacions:</p>
-
-            <div class="content-grid two-col">
-                <div class="concept-card slide">
-                    <h3>Recursos Humans</h3>
-                    <p>Sistemes de gestió de personal, nòmines, formació i desenvolupament professional dels treballadors. Plataformes de reclutament i avaluació del rendiment.</p>
-                </div>
-                
-                <div class="concept-card slide">
-                    <h3>Finances</h3>
-                    <p>Software de comptabilitat, control financer, facturació i anàlisi econòmica empresarial. Sistemes de planificació pressupostària.</p>
-                </div>
-                
-                <div class="concept-card slide">
-                    <h3>Vendes i Màrqueting</h3>
-                    <p>CRM per gestió comercial, seguiment de clients, campanyes de màrqueting digital i anàlisi de vendes. E-commerce i plataformes digitals.</p>
-                </div>
-                
-                <div class="concept-card slide">
-                    <h3>Operacions</h3>
-                    <p>ERP per gestió de processos, logística, cadena de subministrament i optimització operacional. Sistemes de qualitat i producció.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Technologies Section -->
-        <section class="story-section section-full section-light" data-section="technologies-intro">
-            <div class="section-content">
-                <h1 class="slide">1.4 Tecnologies de digitalització</h1>
-                <p class="statement slide">L'ecosistema tecnològic que impulsa la transformació digital</p>
-            </div>
-        </section>
-
-        <section class="story-section section-content" data-section="technologies">
-            <h2 class="slide">Mapa tecnològic de la digitalització</h2>
-            
-            <p class="slide">Les tecnologies de digitalització s'organitzen en tres àmbits principals que es complementen per crear un ecosistema digital integrat:</p>
-
-            <div class="content-grid three-col">
-                <div class="concept-card slide">
-                    <h3>Àrea Administrativa</h3>
-                    <ul>
-                        <li>ERP (Enterprise Resource Planning)</li>
-                        <li>CRM (Customer Relationship Management)</li>
-                        <li>BI (Business Intelligence)</li>
-                        <li>Sistemes de gestió documental</li>
-                        <li>Plataformes col·laboratives</li>
-                    </ul>
-                </div>
-                
-                <div class="concept-card slide">
-                    <h3>Connexió IT-OT</h3>
-                    <ul>
-                        <li>IoT (Internet of Things)</li>
-                        <li>APIs d'integració</li>
-                        <li>Plataformes Cloud híbrides</li>
-                        <li>Edge Computing</li>
-                        <li>Middleware d'integració</li>
-                    </ul>
-                </div>
-                
-                <div class="concept-card slide">
-                    <h3>Àrea Productiva</h3>
-                    <ul>
-                        <li>SCADA (Supervisory Control)</li>
-                        <li>MES (Manufacturing Execution Systems)</li>
-                        <li>Sensors industrials IoT</li>
-                        <li>Robòtica i automatització</li>
-                        <li>Sistemes de visió artificial</li>
-                    </ul>
-                </div>
-            </div>
-
-            <p class="slide">Aquesta integració tecnològica permet crear <strong>fàbriques intel·ligents</strong> i <strong>empreses connectades</strong> que responen de manera àgil als canvis del mercat.</p>
-        </section>
-
-        <!-- Benefits Section -->
-        <section class="story-section section-full section-black" data-section="benefits-intro">
-            <div class="section-content">
-                <h1 class="slide">1.5 Avantatges de la digitalització</h1>
-            </div>
-        </section>
-
-        <section class="story-section section-content" data-section="benefits">
-            <h2 class="slide">Transformació amb impacte mesurable</h2>
-            
-            <p class="slide">La digitalització ofereix beneficis tangibles que transformen la competitivitat empresarial:</p>
-
-            <div class="content-grid two-col">
-                <div class="concept-card slide">
-                    <h3>Eficiència Operacional</h3>
-                    <p>Optimització de processos amb reducció de fins al 30% en temps d'execució. Eliminació de tasques repetitives mitjançant automatització intel·ligent.</p>
-                </div>
-                
-                <div class="concept-card slide">
-                    <h3>Innovació i Agilitat</h3>
-                    <p>Desenvolupament accelerat de nous productes i serveis. Capacitat de resposta ràpida als canvis del mercat i demandes dels clients.</p>
-                </div>
-                
-                <div class="concept-card slide">
-                    <h3>Reducció de Costos</h3>
-                    <p>Optimització de recursos amb estalvis del 15-25% en costos operacionals. Reducció d'errors humans i millora de la qualitat.</p>
-                </div>
-                
-                <div class="concept-card slide">
-                    <h3>Decisions Basades en Dades</h3>
-                    <p>Accés a informació en temps real per a decisions estratègiques. Analítica predictiva per anticipar tendències i problemes.</p>
-                </div>
-            </div>
-
-            <blockquote class="slide">
-                <p>"Les empreses digitalitzades són 23% més rendibles i creixen 12% més ràpid que les seves competidores tradicionals."</p>
-                <p style="font-size: 0.9em; margin-top: 1rem;">— Estudi MIT Sloan Management Review, 2023</p>
-            </blockquote>
-        </section>
-
-        <!-- Summary Section -->
-        <section class="story-section section-content" data-section="summary">
-            <h2 class="slide">Resum executiu</h2>
-            
-            <p class="statement slide">La digitalització transforma els sectors productius integrant tecnologies IT i OT per millorar l'eficiència, la innovació i la competitivitat empresarial en l'era digital actual.</p>
-
-            <hr class="slide">
-
-            <div class="content-grid three-col">
-                <div class="slide">
-                    <h3>Conceptes Clau</h3>
-                    <p>Cloud Computing, Big Data, Intel·ligència Artificial i IoT com a pilars fonamentals de la transformació digital empresarial.</p>
-                </div>
-                <div class="slide">
-                    <h3>Integració IT-OT</h3>
-                    <p>Convergència entre sistemes d'informació i tecnologies operacionals per crear ecosistemes digitals integrats i eficients.</p>
-                </div>
-                <div class="slide">
-                    <h3>Beneficis Empresarials</h3>
-                    <p>Augment significatiu de l'eficiència, reducció de costos operacionals, acceleració de la innovació i millora en la presa de decisions estratègiques.</p>
-                </div>
-            </div>
-
-            <hr class="slide">
-
-            <p class="comment slide">Aquest és només l'inici del viatge cap a la transformació digital. Els següents resultats d'aprenentatge exploraran tecnologies específiques i les seves aplicacions pràctiques.</p>
-        </section>
-
-        <!-- Footer -->
-        <section class="story-section section-full section-black" data-section="footer">
-            <div class="section-content">
-                <p class="comment slide">© 2025 Institut Pompeu Fabra - Digitalització Aplicada al Sector Productiu</p>
-                <p class="comment slide">RA1 - Repercussió de la digitalització en els sectors productius</p>
-                <p class="comment slide" style="font-size: 0.8em; margin-top: 2rem; cursor: pointer; text-decoration: underline;" id="exportBtn">
-                    Descarregar com a PDF
-                </p>
-            </div>
-        </section>
-
+    <!-- Progress Percentage -->
+    <div class="progress-percentage" id="progressPercentage">
+        8%
     </div>
 
     <script src="scripts/ra1.js"></script>
