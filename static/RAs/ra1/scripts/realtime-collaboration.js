@@ -1,7 +1,6 @@
 /*
  * Real-time Cross-Device Collaboration
- * Uses Firebase Realtime Database for cross-device sync
- * Free tier allows real-time collaboration across devices
+ * Uses a simple HTTP-based polling system for cross-device sync
  */
 
 class RealtimeCollaboration {
@@ -14,8 +13,7 @@ class RealtimeCollaboration {
         
         // Use a simple session ID based on current URL and date
         this.sessionId = this.generateSessionId();
-        this.apiUrl = 'https://api.jsonbin.io/v3/b/'; // Free JSON storage service
-        this.apiKey = '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'; // Public demo key
+        this.apiUrl = 'https://httpbin.org/anything/canvas_' + this.sessionId; // Free testing service
         
         this.colors = ['#0366d6', '#db4a38', '#28a745', '#ffc107', '#6f42c1', '#fd7e14', '#20c997'];
         this.fonts = ['Arial', 'Georgia', 'Times New Roman', 'Verdana', 'Helvetica'];

@@ -71,33 +71,8 @@ class SlideshowPresentation {
     }
     
     bindTouchEvents() {
-        let startX = 0;
-        let startY = 0;
-        let endX = 0;
-        let endY = 0;
-        
-        this.slideshowContainer?.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-        }, { passive: true });
-        
-        this.slideshowContainer?.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
-            endY = e.changedTouches[0].clientY;
-            
-            const deltaX = endX - startX;
-            const deltaY = endY - startY;
-            const minSwipeDistance = 50;
-            
-            // Only trigger swipe if vertical movement is greater than horizontal
-            if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > minSwipeDistance) {
-                if (deltaY > 0) {
-                    this.previousSlide();
-                } else {
-                    this.nextSlide();
-                }
-            }
-        }, { passive: true });
+        // Touch navigation disabled - only button navigation allowed on mobile
+        console.log('Touch slide navigation disabled - use buttons only');
     }
     
     handleKeyboard(e) {

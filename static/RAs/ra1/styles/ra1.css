@@ -558,6 +558,7 @@ body {
   z-index: 998;
   opacity: 0;
   transition: opacity 0.3s ease;
+  width: 160px; /* Make container narrower */
 }
 
 .qr-fixed.visible {
@@ -810,12 +811,9 @@ body {
     height: auto;
   }
   
-  /* QR code mobile positioning */
+  /* Hide QR code on mobile */
   .qr-fixed {
-    top: auto;
-    bottom: calc(var(--spacing-lg) * 6);
-    right: var(--spacing-base);
-    transform: none;
+    display: none;
   }
   
   .qr-container {
