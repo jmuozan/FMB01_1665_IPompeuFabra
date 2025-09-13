@@ -297,21 +297,14 @@ class SlideshowPresentation {
         
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Add a subtle background
-        this.ctx.fillStyle = '#f8f9fa';
+        // Add background matching page color
+        this.ctx.fillStyle = '#fff';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         // Add a border
         this.ctx.strokeStyle = '#dee2e6';
         this.ctx.lineWidth = 2;
         this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Add placeholder text
-        this.ctx.font = '16px Arial';
-        this.ctx.fillStyle = '#6c757d';
-        this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle';
-        this.ctx.fillText('Els vostres pensaments apareixeran aquí...', this.canvas.width / 2, this.canvas.height / 2);
     }
     
     initializeCanvas() {
