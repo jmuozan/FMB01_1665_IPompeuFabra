@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="styles/ra1.css" />
     <title>RA1 - Digitalització Aplicada</title>
     
-    <!-- QR Code Library - Local version to avoid CDN issues -->
-    <script src="scripts/qrcode-simple.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -300,11 +298,14 @@
         8%
     </div>
 
-    <!-- QR Code - Fixed Right Side (only visible on slide 3) -->
+    <!-- Share Link - Fixed Right Side (only visible on slide 3) -->
     <div class="qr-fixed" id="qrFixed">
         <div class="qr-container">
-            <canvas id="qrCanvas"></canvas>
-            <p class="qr-text">Escaneja per participar</p>
+            <div class="share-link" id="shareLink">
+                <div class="share-title">Participa des del teu mòbil</div>
+                <div class="share-url" id="shareUrl">Loading...</div>
+                <button class="share-btn" id="copyBtn">📋 Copiar enllaç</button>
+            </div>
         </div>
     </div>
 

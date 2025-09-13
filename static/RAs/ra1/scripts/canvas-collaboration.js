@@ -10,7 +10,8 @@ class CanvasCollaboration {
         this.studentInput = document.getElementById(inputId);
         this.addTextBtn = document.getElementById(addBtnId);
         this.clearCanvasBtn = document.getElementById(clearBtnId);
-        this.qrCanvas = document.getElementById(qrCanvasId);
+        this.shareUrl = document.getElementById('shareUrl');
+        this.copyBtn = document.getElementById('copyBtn');
         
         this.sessionKey = 'canvas_session_' + this.getSessionId();
         this.lastUpdateTime = 0;
@@ -23,8 +24,8 @@ class CanvasCollaboration {
     }
     
     init() {
-        // Always generate QR code regardless of canvas existence
-        this.generateQRCode();
+        // Always setup share link
+        this.setupShareLink();
         
         // Only setup canvas functionality if canvas exists
         if (this.canvas && this.ctx) {
@@ -33,7 +34,7 @@ class CanvasCollaboration {
             this.startPolling();
             console.log('Canvas Collaboration initialized with full functionality');
         } else {
-            console.log('Canvas Collaboration initialized - QR code only');
+            console.log('Canvas Collaboration initialized - share link only');
         }
     }
     
@@ -192,22 +193,45 @@ class CanvasCollaboration {
         }
     }
     
-    generateQRCode() {
-        if (!this.qrCanvas || typeof QRCode === 'undefined') return;
+    setupShareLink() {
+        if (!this.shareUrl) return;
         
         const currentUrl = window.location.href;
         
-        QRCode.toCanvas(this.qrCanvas, currentUrl, {
-            width: 120,
-            height: 120,
-            colorDark: '#0366d6',
-            colorLight: '#ffffff',
-            margin: 1
-        }, (error) => {
-            if (error) {
-                console.error('QR Code generation failed:', error);
-            }
-        });
+        // Display the URL in a user-friendly way
+        const shortUrl = currentUrl
+            .replace('https://', '')
+            .replace('http://', '')
+            .replace(/^www\./, '');
+        
+        this.shareUrl.textContent = shortUrl;
+        
+        // Setup copy functionality
+        if (this.copyBtn) {
+            this.copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(currentUrl).then(() => {
+                    const originalText = this.copyBtn.textContent;
+                    this.copyBtn.textContent = '✅ Copiat!';
+                    setTimeout(() => {
+                        this.copyBtn.textContent = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = currentUrl;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    const originalText = this.copyBtn.textContent;
+                    this.copyBtn.textContent = '✅ Copiat!';
+                    setTimeout(() => {
+                        this.copyBtn.textContent = originalText;
+                    }, 2000);
+                });
+            });
+        }
     }
     
     // Cleanup method
@@ -228,6 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'studentInput', 
         'addTextBtn',
         'clearCanvasBtn',
-        'qrCanvas'
+        'shareLink' // Changed from qrCanvas to shareLink
     );
 });
