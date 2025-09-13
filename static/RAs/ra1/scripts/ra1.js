@@ -7,10 +7,10 @@
 class SlideshowPresentation {
     constructor() {
         this.currentSlide = 1;
-        this.totalSlides = 13;
+        this.totalSlides = 0;
         this.slides = [];
         this.isTransitioning = false;
-        
+
         this.init();
     }
     
@@ -18,6 +18,7 @@ class SlideshowPresentation {
         // Cache DOM elements
         this.slideshowContainer = document.getElementById('slideshowContainer');
         this.slides = document.querySelectorAll('.slide');
+        this.totalSlides = this.slides.length;
         this.prevBtn = document.getElementById('prevSlide');
         this.nextBtn = document.getElementById('nextSlide');
         this.currentSlideSpan = document.getElementById('currentSlide');
@@ -25,24 +26,33 @@ class SlideshowPresentation {
         this.progressPercentage = document.getElementById('progressPercentage');
         this.hamburgerMenu = document.querySelector('.navbar__bars');
         this.navMenu = document.querySelector('.navbar__menu');
-        
+        this.navbar = document.querySelector('.navbar');
+
+        // Navigation elements
+        this.slideNavigation = document.getElementById('slideNavigation');
+
         // QR code visibility control
         this.qrFixed = document.getElementById('qrFixed');
-        
+
+        // Generate dynamic navigation
+        this.generateSlideNavigation();
+
         // Set up initial state
         this.updateSlideCounter();
         this.updateProgressPercentage();
         this.updateNavigationButtons();
-        
+        this.updateSlideNavigation();
+        this.updateNavbarTheme();
+
         // Bind event listeners
         this.bindEvents();
-        
+
         // Initialize first slide
         this.showSlide(1);
-        
+
         // Set initial QR visibility
         this.updateQRVisibility();
-        
+
         console.log('RA1 Slideshow initialized with', this.totalSlides, 'slides');
     }
     
@@ -59,8 +69,10 @@ class SlideshowPresentation {
         
         // Mobile hamburger menu
         this.hamburgerMenu?.addEventListener('click', () => this.toggleMobileMenu());
-        
-        
+
+        // Slide navigation clicks (will be bound after generation)
+        this.bindSlideNavigationEvents();
+
         // Window resize handler
         window.addEventListener('resize', () => this.handleResize());
         
@@ -128,6 +140,8 @@ class SlideshowPresentation {
         this.updateSlideCounter();
         this.updateProgressPercentage();
         this.updateNavigationButtons();
+        this.updateSlideNavigation();
+        this.updateNavbarTheme();
         this.updateQRVisibility();
         
         // Perform slide transition
@@ -186,6 +200,98 @@ class SlideshowPresentation {
         }
     }
     
+    generateSlideNavigation() {
+        if (!this.slideNavigation) return;
+
+        // Clear existing navigation
+        this.slideNavigation.innerHTML = '';
+
+        // Generate navigation items for each slide
+        this.slides.forEach((slide, index) => {
+            const slideNumber = index + 1;
+            const slideTitle = this.extractSlideTitle(slide, slideNumber);
+
+            const navItem = document.createElement('div');
+            navItem.className = 'slide-nav-item';
+            navItem.setAttribute('data-slide', slideNumber);
+            navItem.innerHTML = `
+                <span class="slide-nav-number">${slideNumber}</span>
+                <span class="slide-nav-title">${slideTitle}</span>
+            `;
+
+            this.slideNavigation.appendChild(navItem);
+        });
+
+        // Update the cached navigation items
+        this.slideNavItems = document.querySelectorAll('.slide-nav-item');
+    }
+
+    extractSlideTitle(slide, slideNumber) {
+        // Try to extract title from various elements in order of preference
+        const titleSelectors = [
+            'h1',           // Main titles
+            'h2',           // Secondary titles
+            '.slide-title', // Specific slide title class
+            '.slide-subtitle' // Subtitle fallback
+        ];
+
+        for (const selector of titleSelectors) {
+            const titleElement = slide.querySelector(selector);
+            if (titleElement && titleElement.textContent.trim()) {
+                let title = titleElement.textContent.trim();
+                // Truncate if too long
+                if (title.length > 25) {
+                    title = title.substring(0, 22) + '...';
+                }
+                return title;
+            }
+        }
+
+        // Fallback to slide number
+        return `Slide ${slideNumber}`;
+    }
+
+    bindSlideNavigationEvents() {
+        if (this.slideNavItems) {
+            this.slideNavItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const slideNumber = parseInt(item.getAttribute('data-slide'));
+                    this.goToSlide(slideNumber);
+                });
+            });
+        }
+    }
+
+    updateSlideNavigation() {
+        if (this.slideNavItems) {
+            this.slideNavItems.forEach(item => {
+                const slideNumber = parseInt(item.getAttribute('data-slide'));
+                if (slideNumber === this.currentSlide) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+    }
+
+    updateNavbarTheme() {
+        if (this.navbar && this.slides[this.currentSlide - 1]) {
+            const currentSlide = this.slides[this.currentSlide - 1];
+
+            // Remove existing theme classes
+            this.navbar.classList.remove('navbar-dark', 'navbar-light');
+
+            // Add appropriate theme class based on slide background
+            if (currentSlide.classList.contains('slide-dark')) {
+                this.navbar.classList.add('navbar-dark');
+            } else if (currentSlide.classList.contains('slide-light')) {
+                this.navbar.classList.add('navbar-light');
+            }
+            // Default navbar styling is used for regular slides
+        }
+    }
+
     updateQRVisibility() {
         if (this.qrFixed) {
             // Show QR code only on slide 3 (the interactive canvas slide)
