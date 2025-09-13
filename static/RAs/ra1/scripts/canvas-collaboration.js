@@ -193,22 +193,9 @@ class CanvasCollaboration {
     }
     
     generateQRCode() {
-        console.log('generateQRCode called');
-        console.log('qrCanvas element:', this.qrCanvas);
-        console.log('QRCode library available:', typeof QRCode !== 'undefined');
-        
-        if (!this.qrCanvas) {
-            console.error('QR Canvas element not found!');
-            return;
-        }
-        
-        if (typeof QRCode === 'undefined') {
-            console.error('QRCode library not loaded!');
-            return;
-        }
+        if (!this.qrCanvas || typeof QRCode === 'undefined') return;
         
         const currentUrl = window.location.href;
-        console.log('Generating QR for URL:', currentUrl);
         
         QRCode.toCanvas(this.qrCanvas, currentUrl, {
             width: 120,
@@ -219,8 +206,6 @@ class CanvasCollaboration {
         }, (error) => {
             if (error) {
                 console.error('QR Code generation failed:', error);
-            } else {
-                console.log('QR Code generated successfully');
             }
         });
     }
