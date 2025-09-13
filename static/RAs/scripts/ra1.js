@@ -6,7 +6,7 @@
 class SlideshowPresentation {
     constructor() {
         this.currentSlide = 1;
-        this.totalSlides = 12;
+        this.totalSlides = 13;
         this.slides = [];
         this.isTransitioning = false;
         
@@ -25,6 +25,13 @@ class SlideshowPresentation {
         this.hamburgerMenu = document.querySelector('.navbar__bars');
         this.navMenu = document.querySelector('.navbar__menu');
         
+        // Interactive canvas elements
+        this.canvas = document.getElementById('wordCanvas');
+        this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+        this.studentInput = document.getElementById('studentInput');
+        this.addTextBtn = document.getElementById('addTextBtn');
+        this.clearCanvasBtn = document.getElementById('clearCanvasBtn');
+        
         // Set up initial state
         this.updateSlideCounter();
         this.updateProgressPercentage();
@@ -35,6 +42,9 @@ class SlideshowPresentation {
         
         // Initialize first slide
         this.showSlide(1);
+        
+        // Initialize canvas if it exists
+        this.initializeCanvas();
         
         console.log('RA1 Slideshow initialized with', this.totalSlides, 'slides');
     }
@@ -52,6 +62,15 @@ class SlideshowPresentation {
         
         // Mobile hamburger menu
         this.hamburgerMenu?.addEventListener('click', () => this.toggleMobileMenu());
+        
+        // Interactive canvas events
+        this.addTextBtn?.addEventListener('click', () => this.addTextToCanvas());
+        this.clearCanvasBtn?.addEventListener('click', () => this.clearCanvas());
+        this.studentInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.addTextToCanvas();
+            }
+        });
         
         // Window resize handler
         window.addEventListener('resize', () => this.handleResize());
@@ -81,9 +100,9 @@ class SlideshowPresentation {
             const deltaY = endY - startY;
             const minSwipeDistance = 50;
             
-            // Only trigger swipe if horizontal movement is greater than vertical
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
-                if (deltaX > 0) {
+            // Only trigger swipe if vertical movement is greater than horizontal
+            if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > minSwipeDistance) {
+                if (deltaY > 0) {
                     this.previousSlide();
                 } else {
                     this.nextSlide();
@@ -94,17 +113,17 @@ class SlideshowPresentation {
     
     handleKeyboard(e) {
         // Prevent default behavior for arrow keys
-        if (['ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+        if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(e.code)) {
             e.preventDefault();
         }
         
         switch (e.code) {
-            case 'ArrowLeft':
             case 'ArrowUp':
+            case 'ArrowLeft':
                 this.previousSlide();
                 break;
-            case 'ArrowRight':
             case 'ArrowDown':
+            case 'ArrowRight':
             case 'Space':
                 this.nextSlide();
                 break;
@@ -152,32 +171,31 @@ class SlideshowPresentation {
     }
     
     showSlide(slideNumber, previousSlideNumber = null) {
-        // Remove active class from all slides
+        const direction = previousSlideNumber ? (slideNumber > previousSlideNumber ? 'forward' : 'backward') : 'forward';
+        
+        // Remove all transition classes from slides
         this.slides.forEach((slide, index) => {
-            slide.classList.remove('active', 'prev', 'next');
+            slide.classList.remove('active', 'slide-from-above', 'slide-from-below');
             
             if (index + 1 === slideNumber) {
+                // New active slide
+                if (previousSlideNumber) {
+                    // Set initial position based on direction
+                    slide.classList.add(direction === 'forward' ? 'slide-from-below' : 'slide-from-above');
+                    // Force a reflow
+                    slide.offsetHeight;
+                }
                 slide.classList.add('active');
-            } else if (previousSlideNumber && index + 1 === previousSlideNumber) {
-                // Add transition class to previous slide
-                slide.classList.add(slideNumber > previousSlideNumber ? 'prev' : 'next');
             }
         });
         
         // Reset transition flag after animation completes
         setTimeout(() => {
             this.isTransitioning = false;
-            
-            // Trigger content animation for active slide
-            const activeSlide = this.slides[slideNumber - 1];
-            if (activeSlide) {
-                const content = activeSlide.querySelector('.slide-content');
-                if (content) {
-                    content.style.animation = 'none';
-                    content.offsetHeight; // Trigger reflow
-                    content.style.animation = 'fadeInUp 0.8s ease 0.3s both';
-                }
-            }
+            // Clean up any remaining transition classes
+            this.slides.forEach(slide => {
+                slide.classList.remove('slide-from-above', 'slide-from-below');
+            });
         }, 800); // Match CSS transition duration
     }
     
@@ -224,6 +242,90 @@ class SlideshowPresentation {
         } else {
             document.exitFullscreen?.();
         }
+    }
+    
+    // Interactive Canvas Methods
+    addTextToCanvas() {
+        if (!this.canvas || !this.ctx || !this.studentInput) return;
+        
+        const text = this.studentInput.value.trim();
+        if (!text) return;
+        
+        // Clear the input
+        this.studentInput.value = '';
+        
+        // Generate random properties
+        const colors = ['#0366d6', '#db4a38', '#28a745', '#ffc107', '#6f42c1', '#fd7e14', '#20c997'];
+        const fonts = ['Arial', 'Georgia', 'Times New Roman', 'Verdana', 'Helvetica'];
+        
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+        const randomSize = Math.floor(Math.random() * 30) + 16; // 16-45px
+        const randomRotation = (Math.random() - 0.5) * 60; // -30 to +30 degrees
+        
+        // Random position (with some margin from edges)
+        const margin = 50;
+        const maxX = this.canvas.width - margin;
+        const maxY = this.canvas.height - margin;
+        const x = Math.floor(Math.random() * (maxX - margin)) + margin;
+        const y = Math.floor(Math.random() * (maxY - margin)) + margin;
+        
+        // Set up context
+        this.ctx.save();
+        this.ctx.translate(x, y);
+        this.ctx.rotate(randomRotation * Math.PI / 180);
+        this.ctx.font = `${randomSize}px ${randomFont}`;
+        this.ctx.fillStyle = randomColor;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        
+        // Add text shadow for better visibility
+        this.ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        this.ctx.shadowBlur = 2;
+        this.ctx.shadowOffsetX = 1;
+        this.ctx.shadowOffsetY = 1;
+        
+        // Draw the text
+        this.ctx.fillText(text, 0, 0);
+        
+        // Restore context
+        this.ctx.restore();
+    }
+    
+    clearCanvas() {
+        if (!this.canvas || !this.ctx) return;
+        
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Add a subtle background
+        this.ctx.fillStyle = '#f8f9fa';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Add a border
+        this.ctx.strokeStyle = '#dee2e6';
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Add placeholder text
+        this.ctx.font = '16px Arial';
+        this.ctx.fillStyle = '#6c757d';
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText('Els vostres pensaments apareixeran aquí...', this.canvas.width / 2, this.canvas.height / 2);
+    }
+    
+    initializeCanvas() {
+        if (!this.canvas || !this.ctx) return;
+        
+        // Set canvas size to match container
+        const container = this.canvas.parentElement;
+        if (container) {
+            this.canvas.width = Math.min(800, container.clientWidth - 40);
+            this.canvas.height = 400;
+        }
+        
+        // Initialize with placeholder
+        this.clearCanvas();
     }
     
     // Public API methods
@@ -291,11 +393,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add some helpful debugging info
     console.log('RA1 Slideshow Controls:');
-    console.log('- Arrow keys: Navigate slides');
+    console.log('- Arrow keys: Navigate slides (↑/← previous, ↓/→ next)');
     console.log('- Space: Next slide');
     console.log('- Home/End: Jump to first/last slide');
     console.log('- Escape: Toggle fullscreen');
-    console.log('- Touch/Swipe: Navigate on mobile');
+    console.log('- Touch/Swipe: Navigate on mobile (vertical swipes)');
     
     // Optional: Start auto-advance after a delay (uncomment if needed)
     // setTimeout(() => {

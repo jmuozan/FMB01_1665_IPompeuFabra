@@ -287,7 +287,7 @@ body {
   height: 100%;
   opacity: 0;
   visibility: hidden;
-  transform: translateX(100%);
+  transform: translateY(100%);
   transition: all var(--transition-slide);
   display: flex;
   align-items: center;
@@ -298,15 +298,15 @@ body {
 .slide.active {
   opacity: 1;
   visibility: visible;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
-.slide.prev {
-  transform: translateX(-100%);
+.slide.slide-from-above {
+  transform: translateY(-100%);
 }
 
-.slide.next {
-  transform: translateX(100%);
+.slide.slide-from-below {
+  transform: translateY(100%);
 }
 
 /* Slide variants */
@@ -331,7 +331,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  animation: fadeInUp 0.8s ease 0.3s both;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .slide-center {
@@ -339,20 +341,16 @@ body {
   align-items: center;
 }
 
-/* Content animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Content state for inactive slides */
+.slide:not(.active) .slide-content {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .slide.active .slide-content {
-  animation: fadeInUp 0.8s ease 0.3s both;
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
 }
 
 /* ==========================================================================
@@ -543,6 +541,92 @@ body {
 }
 
 /* ==========================================================================
+   INTERACTIVE CANVAS STYLES
+   ========================================================================== */
+
+.interactive-section {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.input-section {
+  display: flex;
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-xl);
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#studentInput {
+  flex: 1;
+  min-width: 250px;
+  padding: var(--spacing-base) var(--spacing-lg);
+  border: 2px solid var(--color-grey-light);
+  border-radius: 25px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-primary);
+  outline: none;
+  transition: var(--transition-fast);
+  background: var(--color-white);
+}
+
+#studentInput:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
+}
+
+.interactive-btn {
+  padding: var(--spacing-base) var(--spacing-xl);
+  border: none;
+  border-radius: 25px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.interactive-btn:not(.secondary) {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.interactive-btn:not(.secondary):hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(3, 102, 214, 0.3);
+}
+
+.interactive-btn.secondary {
+  background: var(--color-grey-light);
+  color: var(--color-grey-dark);
+}
+
+.interactive-btn.secondary:hover {
+  background: var(--color-grey);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-lg);
+}
+
+#wordCanvas {
+  border: 2px solid var(--color-grey-light);
+  border-radius: 12px;
+  background: var(--color-slide-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: auto;
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN
    ========================================================================== */
 
@@ -635,6 +719,29 @@ body {
   .slide-quote {
     font-size: var(--font-size-base);
     margin: var(--spacing-lg) 0;
+  }
+  
+  /* Interactive elements mobile styles */
+  .input-section {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  #studentInput {
+    min-width: 200px;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-base);
+  }
+  
+  .interactive-btn {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-base);
+    font-size: var(--font-size-sm);
+  }
+  
+  #wordCanvas {
+    max-width: calc(100vw - 40px);
+    height: auto;
   }
 }
 
