@@ -257,7 +257,7 @@ body {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   font-family: var(--font-primary);
-  z-index: 997;
+  z-index: 996;
   min-width: 50px;
   text-align: center;
   backdrop-filter: blur(10px);
@@ -550,6 +550,43 @@ body {
   margin: 0 auto;
 }
 
+.qr-fixed {
+  position: fixed;
+  top: 50%;
+  right: var(--spacing-lg);
+  transform: translateY(-50%);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.qr-fixed.visible {
+  opacity: 1;
+}
+
+.qr-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: var(--spacing-base);
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--color-grey-light);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+#qrCanvas {
+  display: block;
+  margin: 0 auto var(--spacing-xs);
+}
+
+.qr-text {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-grey-dark);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+}
+
 .input-section {
   display: flex;
   gap: var(--spacing-base);
@@ -740,6 +777,27 @@ body {
   #wordCanvas {
     max-width: calc(100vw - 40px);
     height: auto;
+  }
+  
+  /* QR code mobile positioning */
+  .qr-fixed {
+    top: auto;
+    bottom: calc(var(--spacing-lg) * 6);
+    right: var(--spacing-base);
+    transform: none;
+  }
+  
+  .qr-container {
+    padding: var(--spacing-xs);
+  }
+  
+  #qrCanvas {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .qr-text {
+    font-size: 10px;
   }
 }
 

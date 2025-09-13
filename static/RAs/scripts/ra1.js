@@ -3,6 +3,7 @@
    Modern slideshow functionality inspired by master folder's approach
    ========================================================================== */
 
+
 class SlideshowPresentation {
     constructor() {
         this.currentSlide = 1;
@@ -25,12 +26,8 @@ class SlideshowPresentation {
         this.hamburgerMenu = document.querySelector('.navbar__bars');
         this.navMenu = document.querySelector('.navbar__menu');
         
-        // Interactive canvas elements
-        this.canvas = document.getElementById('wordCanvas');
-        this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
-        this.studentInput = document.getElementById('studentInput');
-        this.addTextBtn = document.getElementById('addTextBtn');
-        this.clearCanvasBtn = document.getElementById('clearCanvasBtn');
+        // QR code visibility control
+        this.qrFixed = document.getElementById('qrFixed');
         
         // Set up initial state
         this.updateSlideCounter();
@@ -43,8 +40,6 @@ class SlideshowPresentation {
         // Initialize first slide
         this.showSlide(1);
         
-        // Initialize canvas if it exists
-        this.initializeCanvas();
         
         console.log('RA1 Slideshow initialized with', this.totalSlides, 'slides');
     }
@@ -63,14 +58,6 @@ class SlideshowPresentation {
         // Mobile hamburger menu
         this.hamburgerMenu?.addEventListener('click', () => this.toggleMobileMenu());
         
-        // Interactive canvas events
-        this.addTextBtn?.addEventListener('click', () => this.addTextToCanvas());
-        this.clearCanvasBtn?.addEventListener('click', () => this.clearCanvas());
-        this.studentInput?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.addTextToCanvas();
-            }
-        });
         
         // Window resize handler
         window.addEventListener('resize', () => this.handleResize());
@@ -113,7 +100,7 @@ class SlideshowPresentation {
     
     handleKeyboard(e) {
         // Prevent default behavior for arrow keys
-        if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(e.code)) {
+        if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.code)) {
             e.preventDefault();
         }
         
@@ -124,7 +111,6 @@ class SlideshowPresentation {
                 break;
             case 'ArrowDown':
             case 'ArrowRight':
-            case 'Space':
                 this.nextSlide();
                 break;
             case 'Home':
@@ -165,6 +151,7 @@ class SlideshowPresentation {
         this.updateSlideCounter();
         this.updateProgressPercentage();
         this.updateNavigationButtons();
+        this.updateQRVisibility();
         
         // Perform slide transition
         this.showSlide(slideNumber, previousSlide);
@@ -222,6 +209,17 @@ class SlideshowPresentation {
         }
     }
     
+    updateQRVisibility() {
+        if (this.qrFixed) {
+            // Show QR code only on slide 3 (the interactive canvas slide)
+            if (this.currentSlide === 3) {
+                this.qrFixed.classList.add('visible');
+            } else {
+                this.qrFixed.classList.remove('visible');
+            }
+        }
+    }
+    
     toggleMobileMenu() {
         if (this.navMenu) {
             this.navMenu.classList.toggle('active');
@@ -244,82 +242,6 @@ class SlideshowPresentation {
         }
     }
     
-    // Interactive Canvas Methods
-    addTextToCanvas() {
-        if (!this.canvas || !this.ctx || !this.studentInput) return;
-        
-        const text = this.studentInput.value.trim();
-        if (!text) return;
-        
-        // Clear the input
-        this.studentInput.value = '';
-        
-        // Generate random properties
-        const colors = ['#0366d6', '#db4a38', '#28a745', '#ffc107', '#6f42c1', '#fd7e14', '#20c997'];
-        const fonts = ['Arial', 'Georgia', 'Times New Roman', 'Verdana', 'Helvetica'];
-        
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
-        const randomSize = Math.floor(Math.random() * 30) + 16; // 16-45px
-        const randomRotation = (Math.random() - 0.5) * 60; // -30 to +30 degrees
-        
-        // Random position (with some margin from edges)
-        const margin = 50;
-        const maxX = this.canvas.width - margin;
-        const maxY = this.canvas.height - margin;
-        const x = Math.floor(Math.random() * (maxX - margin)) + margin;
-        const y = Math.floor(Math.random() * (maxY - margin)) + margin;
-        
-        // Set up context
-        this.ctx.save();
-        this.ctx.translate(x, y);
-        this.ctx.rotate(randomRotation * Math.PI / 180);
-        this.ctx.font = `${randomSize}px ${randomFont}`;
-        this.ctx.fillStyle = randomColor;
-        this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle';
-        
-        // Add text shadow for better visibility
-        this.ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-        this.ctx.shadowBlur = 2;
-        this.ctx.shadowOffsetX = 1;
-        this.ctx.shadowOffsetY = 1;
-        
-        // Draw the text
-        this.ctx.fillText(text, 0, 0);
-        
-        // Restore context
-        this.ctx.restore();
-    }
-    
-    clearCanvas() {
-        if (!this.canvas || !this.ctx) return;
-        
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Add background matching page color
-        this.ctx.fillStyle = '#fff';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Add a border
-        this.ctx.strokeStyle = '#dee2e6';
-        this.ctx.lineWidth = 2;
-        this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-    
-    initializeCanvas() {
-        if (!this.canvas || !this.ctx) return;
-        
-        // Set canvas size to match container
-        const container = this.canvas.parentElement;
-        if (container) {
-            this.canvas.width = Math.min(800, container.clientWidth - 40);
-            this.canvas.height = 400;
-        }
-        
-        // Initialize with placeholder
-        this.clearCanvas();
-    }
     
     // Public API methods
     getCurrentSlide() {
@@ -387,7 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add some helpful debugging info
     console.log('RA1 Slideshow Controls:');
     console.log('- Arrow keys: Navigate slides (↑/← previous, ↓/→ next)');
-    console.log('- Space: Next slide');
     console.log('- Home/End: Jump to first/last slide');
     console.log('- Escape: Toggle fullscreen');
     console.log('- Touch/Swipe: Navigate on mobile (vertical swipes)');
