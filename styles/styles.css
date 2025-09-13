@@ -145,6 +145,12 @@
   transition: all 0.2s ease;
 }
 
+.navbar__menu--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .navbar__menu #button {
   padding: 8px 16px;
   border: 1px solid var(--color-accent);

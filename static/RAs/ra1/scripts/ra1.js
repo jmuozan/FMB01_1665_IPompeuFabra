@@ -40,6 +40,8 @@ class SlideshowPresentation {
         // Initialize first slide
         this.showSlide(1);
         
+        // Set initial QR visibility
+        this.updateQRVisibility();
         
         console.log('RA1 Slideshow initialized with', this.totalSlides, 'slides');
     }
@@ -210,13 +212,20 @@ class SlideshowPresentation {
     }
     
     updateQRVisibility() {
+        console.log('updateQRVisibility called, currentSlide:', this.currentSlide);
+        console.log('qrFixed element:', this.qrFixed);
+        
         if (this.qrFixed) {
             // Show QR code only on slide 3 (the interactive canvas slide)
             if (this.currentSlide === 3) {
+                console.log('Setting QR visible');
                 this.qrFixed.classList.add('visible');
             } else {
+                console.log('Setting QR hidden');
                 this.qrFixed.classList.remove('visible');
             }
+        } else {
+            console.error('QR element not found!');
         }
     }
     

@@ -23,14 +23,18 @@ class CanvasCollaboration {
     }
     
     init() {
-        if (!this.canvas || !this.ctx) return;
-        
-        this.setupCanvas();
-        this.bindEvents();
+        // Always generate QR code regardless of canvas existence
         this.generateQRCode();
-        this.startPolling();
         
-        console.log('Canvas Collaboration initialized');
+        // Only setup canvas functionality if canvas exists
+        if (this.canvas && this.ctx) {
+            this.setupCanvas();
+            this.bindEvents();
+            this.startPolling();
+            console.log('Canvas Collaboration initialized with full functionality');
+        } else {
+            console.log('Canvas Collaboration initialized - QR code only');
+        }
     }
     
     getSessionId() {
@@ -189,9 +193,22 @@ class CanvasCollaboration {
     }
     
     generateQRCode() {
-        if (!this.qrCanvas || typeof QRCode === 'undefined') return;
+        console.log('generateQRCode called');
+        console.log('qrCanvas element:', this.qrCanvas);
+        console.log('QRCode library available:', typeof QRCode !== 'undefined');
+        
+        if (!this.qrCanvas) {
+            console.error('QR Canvas element not found!');
+            return;
+        }
+        
+        if (typeof QRCode === 'undefined') {
+            console.error('QRCode library not loaded!');
+            return;
+        }
         
         const currentUrl = window.location.href;
+        console.log('Generating QR for URL:', currentUrl);
         
         QRCode.toCanvas(this.qrCanvas, currentUrl, {
             width: 120,
@@ -220,15 +237,12 @@ class CanvasCollaboration {
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize canvas collaboration if elements exist
-    const canvasExists = document.getElementById('wordCanvas');
-    if (canvasExists) {
-        window.canvasCollaboration = new CanvasCollaboration(
-            'wordCanvas',
-            'studentInput', 
-            'addTextBtn',
-            'clearCanvasBtn',
-            'qrCanvas'
-        );
-    }
+    // Always try to initialize - the class will handle missing elements gracefully
+    window.canvasCollaboration = new CanvasCollaboration(
+        'wordCanvas',
+        'studentInput', 
+        'addTextBtn',
+        'clearCanvasBtn',
+        'qrCanvas'
+    );
 });
