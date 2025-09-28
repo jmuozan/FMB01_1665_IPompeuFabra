@@ -1,284 +1,261 @@
 <!DOCTYPE html>
 <html lang="ca">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous" />
-    <link rel="stylesheet" href="styles/ra1.css" />
-    <title>RA1 - Digitalització Aplicada</title>
-    
-</head>
-<body>
-    <!-- Navigation -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+      integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../../../styles/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <title>RA1 - Digitalitzaci� Aplicada al Sector Productiu</title>
+    <style>
+      .slideshow-container {
+        width: 100%;
+        height: 95vh;
+        background: transparent;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 1rem 0;
+        max-width: 1800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .slideshow-fallback {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .slide-display {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .image-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+
+      #current-slide-img {
+        max-width: 100%;
+        max-height: 85vh;
+        min-height: 600px;
+        object-fit: contain;
+        display: none;
+        image-rendering: crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+      }
+
+      #pdf-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: white;
+        display: block;
+        transform: translateY(-40px);
+        margin-bottom: -40px;
+        object-fit: contain;
+        aspect-ratio: 16/9;
+      }
+
+      .pdf-container {
+        position: relative;
+        width: 100%;
+        height: 60vh;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        background: white;
+      }
+
+      /* Target PDF viewer internal elements to force horizontal layout */
+      #pdf-iframe #viewerContainer {
+        writing-mode: horizontal-tb !important;
+        direction: ltr !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+      }
+
+      /* Global CSS to target viewerContainer in any PDF iframe */
+      iframe #viewerContainer,
+      iframe [id="viewerContainer"] {
+        writing-mode: horizontal-tb !important;
+        direction: ltr !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      /* Force all PDF pages to display horizontally */
+      iframe .page,
+      iframe [class*="page"] {
+        display: inline-block !important;
+        width: auto !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        object-fit: contain !important;
+        aspect-ratio: 16/9 !important;
+      }
+
+      #loading-indicator {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        display: none;
+        z-index: 1000;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .slide-controls {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 12px 20px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        z-index: 100;
+      }
+
+      .slide-controls button {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .slide-controls button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
+
+      .slide-controls button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      #slide-info {
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 14px;
+        min-width: 120px;
+        text-align: center;
+      }
+
+      .ra-content {
+        max-width: 1900px;
+        margin: 0 auto;
+        padding: 0.5rem;
+      }
+
+      .ra-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .ra-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body>
     <nav class="navbar">
-        <a href="../../../index.html" class="navbar__logo">FMB0_1665</a>
-        <div class="navbar__bars"><i class="fas fa-bars"></i></div>
-        <div class="navbar__menu">
-            <a href="ra1.html" class="navbar__menu--links">RA1</a>
-            <a href="../ra2/" class="navbar__menu--links">RA2</a>
-            <a href="../ra3/" class="navbar__menu--links">RA3</a>
-            <a href="#" class="navbar__menu--links navbar__menu--disabled">RA4</a>
-            <a href="#" class="navbar__menu--links navbar__menu--disabled">RA5</a>
-            <a href="#" class="navbar__menu--links navbar__menu--disabled">RA6</a>
-            <a href="../../info.html" class="navbar__menu--links">Info</a>
-        </div>
+      <a href="../../../index.html" class="navbar__logo">FMB0_1665</a>
+      <div class="navbar__bars"><i class="fas fa-bars"></i></div>
+      <div class="navbar__menu">
+        <a href="./ra1.html" class="navbar__menu--links">RA1</a>
+        <a href="../ra2/" class="navbar__menu--links">RA2</a>
+        <a href="../ra3/" class="navbar__menu--links">RA3</a>
+        <a href="#" class="navbar__menu--links navbar__menu--disabled">RA4</a>
+        <a href="#" class="navbar__menu--links navbar__menu--disabled">RA5</a>
+        <a href="#" class="navbar__menu--links navbar__menu--disabled">RA6</a>
+        <a href="../../info.html" class="navbar__menu--links">Info</a>
+      </div>
     </nav>
 
-    <!-- Slide Navigation List (Generated Dynamically) -->
-    <div class="slide-navigation" id="slideNavigation"></div>
+    <div class="ra-content">
 
-    <!-- Slideshow Controls -->
-    <div class="slideshow-controls">
-        <button class="control-btn prev-btn" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
-        <div class="slide-counter">
-            <span id="currentSlide">1</span> / <span id="totalSlides">0</span>
+      <div class="slideshow-container">
+        <!-- Custom slideshow will be injected here by JavaScript -->
+        <div class="slideshow-fallback">
+          <div class="slide-display">
+            <div class="image-wrapper">
+              <div class="pdf-container">
+                <iframe id="pdf-iframe" src=""></iframe>
+              </div>
+              <div id="loading-indicator">Loading slide...</div>
+              <div class="slide-controls">
+                <button id="prev-btn" onclick="changeSlide(-1)">◀</button>
+                <span id="slide-info">1 / 63 (2%)</span>
+                <button id="next-btn" onclick="changeSlide(1)">▶</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <button class="control-btn next-btn" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+      </div>
     </div>
 
-
-    <!-- Slideshow Container -->
-    <div class="slideshow-container" id="slideshowContainer">
-        
-        <!-- Slide 1: Title -->
-        <div class="slide active" data-slide="1">
-            <div class="slide-content slide-center">
-                <h1 class="slide-title">Repercussió de la digitalització en els sectors productius</h1>
-                <p class="slide-subtitle">Digitalització Aplicada al Sector Productiu</p>
-                <p class="slide-meta">Institut Pompeu Fabra — Curs 2025/26</p>
-            </div>
+    <div class="footer">
+      <div class="footer__container">
+        <div class="footer__left">
+          <p class="footer__copyright">
+            � 2025 Jorge Mu�oz Zan�n. Tot el contingut d'esta p�gina est� llicenciat sota
+            <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">Llic�ncia MIT</a>
+            tret que s'indique el contrari.
+          </p>
         </div>
-
-        <!-- Slide 2: Digitalizar Question -->
-        <div class="slide" data-slide="2">
-            <div class="slide-content slide-center">
-                <h1 class="slide-title">Digitalitzar: què és?</h1>
-                <div class="slide-text">
-                    <p>Reflexionem sobre què significa per a vosaltres la digitalització...</p>
-                </div>
-            </div>
+        <div class="footer__right">
+          <div class="footer__social">
+            <a href="https://github.com/jmuozan/FMB01_1665_IPompeuFabra" target="_blank" rel="noopener noreferrer" class="footer__social--link">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/jorgemunozzanon/" target="_blank" rel="noopener noreferrer" class="footer__social--link">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </div>
         </div>
-
-        <!-- Slide 3: Interactive Canvas -->
-        <div class="slide" data-slide="3">
-            <div class="slide-content">
-                <h2>Comparteix la teua visió</h2>
-                <div class="interactive-section">
-                    <div class="input-section">
-                        <input type="text" id="studentInput" placeholder="Escriu què significa digitalització per a tu..." maxlength="50">
-                        <button id="addTextBtn" class="interactive-btn">Afegir</button>
-                        <button id="clearCanvasBtn" class="interactive-btn secondary">Netejar</button>
-                    </div>
-                    <div class="canvas-container">
-                        <canvas id="wordCanvas" width="800" height="400"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 4: Def1 -->
-        <div class="slide slide-dark" data-slide="4">
-            <div class="slide-content slide-center">
-                <div class="slide-image">
-                    <img src="./img/avl.png" alt="Digitalització" class="concept-image" style="width: 1000px; height: auto;">
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 5: Def2 -->
-        <div class="slide slide-dark" data-slide="5">
-            <div class="slide-content slide-center">
-                <div class="slide-image">
-                    <img src="./img/diccionaricat.png" alt="Digitalització" class="concept-image" style="width: 1000px; height: auto;">
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 7: IT vs OT Title -->
-        <div class="slide slide-dark" data-slide="6">
-            <div class="slide-content slide-center">
-                <h1>Què entenem per digitalització?</h1>
-                <p class="slide-subtitle">La digitalització és el procés de transformar informació, objectes i processos físics o analògics en formats digitals mitjançant la utilització de tecnologies informàtiques.</p>
-            </div>
-        </div>
-
-        <!-- Slide 6: What is Digitalization -->
-        <div class="slide" data-slide="7">
-            <div class="slide-content">
-                <h2>Què vol dir transformació digital?</h2>
-                <div class="slide-text">
-                    <p>La transformació digital és el procés de transformació dels processos empresarials mitjançant tecnologies digitals per optimitzar l'eficiència operativa i crear nous models de valor.</p>
-                    
-                    <div class="slide-grid">
-                        <div class="slide-card">
-                            <h3>Transformació de Processos</h3>
-                            <p>Conversió de processos analògics i manuals en sistemes digitals automatitzats.</p>
-                        </div>
-                        <div class="slide-card">
-                            <h3>Integració Tecnològica</h3>
-                            <p>Connexió de sistemes per crear ecosistemes digitals coherents.</p>
-                        </div>
-                        <div class="slide-card">
-                            <h3>Innovació Contínua</h3>
-                            <p>Capacitat d'adaptar-se ràpidament mitjançant solucions àgils.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 8: Integració Tecnològica -->
-        <div class="slide slide-center" data-slide="8">
-            <div class="slide-content">
-                <h1>Integració Tecnològica</h1>
-                <div class="slide-image">
-                    <img src="./img/3dpa.png" alt="Digitalització" class="concept-image" style="width: 800px; height: auto;">
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 9: Transformació de Processos -->
-        <div class="slide slide-center" data-slide="9">
-            <div class="slide-content">
-                <h1>Transformació de Processos</h1>
-                <div class="slide-image">
-                    <img src="./img/EXPLOSIONAT_BRESSOL.png" alt="Digitalització" class="concept-image" style="width: 900px; height: auto;">
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 10: Innovació Continua -->
-        <div class="slide slide-center" data-slide="10">
-            <div class="slide-content">
-                <h1>Innovació Continua</h1>
-                <div class="slide-image">
-                    <img src="./img/kenolsen.jpg" alt="Digitalització" class="concept-image" style="width: 600px; height: auto;">
-                </div>
-                <blockquote class="slide-quote">
-                        "No hi ha cap raó perquè cap individu tingui un ordinador a casa seva."
-                        <footer>— Ken Olsen, Cofundador de Digital Equipment Corporation (Dissolució al 1992)</footer>
-                </blockquote>
-            </div>
-        </div>
-
-        <!-- Slide 11: Key Components -->
-        <div class="slide" data-slide="11">
-            <div class="slide-content">
-                <h2>Components clau de la transformació digital</h2>
-                <div class="slide-text">
-                    <ul class="slide-list">
-                        <li><strong>Cloud Computing:</strong> Infraestructura i serveis informàtics accessibles a través d'Internet, permetent escalabilitat i flexibilitat</li>
-                        <li><strong>Big Data:</strong> Recopilació i anàlisi de grans volums de dades per identificar patrons i prendre decisions informades</li>
-                        <li><strong>Intel·ligència Artificial:</strong> Sistemes que simulen processos d'intel·ligència humana com l'aprenentatge i la resolució de problemes</li>
-                        <li><strong>Internet of Things (IoT):</strong> Xarxa d'objectes físics equipats amb sensors que recullen i intercanvien dades</li>
-                        <li><strong>Robòtica i Automatització:</strong> Màquines programables que executen tasques amb precisió i eficiència</li>
-                    </ul>
-
-                    <blockquote class="slide-quote">
-                        "Hem tingut una revolució digital, però no necessitem continuar tenint-la."
-                        <footer>— Neil Gershenfeld, Director del MIT Center for Bits and Atoms</footer>
-                    </blockquote>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 12: Digitalització vs Transformació Digital Title -->
-        <div class="slide slide-dark" data-slide="12">
-            <div class="slide-content slide-center">
-                <h1>Digitalització vs Transformació Digital</h1>
-                <p class="slide-subtitle">Mentre que la digitalització pot ser entesa com un pas cap a la modernització i l'eficiència, la transformació digital és un canvi estratègic integral que busca transformar tots els aspectes de l'organització per a estar al dia amb els canvis tecnològics i de mercat, i adaptar-se millor a les necessitats futures.</p>
-            </div>
-        </div>
-
-        <!-- Slide 13: Activity 1 -->
-        <div class="slide" data-slide="13">
-            <div class="slide-content">
-                <h2>Activitat 1: Investigació i Anàlisi de Transformació Digital</h2>
-                <div class="slide-text">
-                    <p><strong>Objectiu:</strong> Investigar com una empresa real ha implementat la digitalització en els seus processos.</p>
-
-                    <div class="slide-grid">
-                        <div class="slide-card">
-                            <h3>1. Selecció d'empresa</h3>
-                            <p>Trieu una empresa coneguda amb digitalització implementada</p>
-                        </div>
-                        <div class="slide-card">
-                            <h3>2. Investigació</h3>
-                            <p>Fonts: articles, informes, notícies, entrevistes</p>
-                        </div>
-                        <div class="slide-card">
-                            <h3>3. Anàlisi components</h3>
-                            <p>Automatització, documents digitals, comunicació, dades</p>
-                        </div>
-                        <div class="slide-card">
-                            <h3>4. Beneficis i reptes</h3>
-                            <p>Identifiqueu millores obtingudes i obstacles superats</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 14: Cloud Computing Explained -->
-        <div class="slide" data-slide="14">
-            <div class="slide-content">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-2xl); align-items: center; height: 100%;">
-
-                    <!-- Left Side: All Text Content -->
-                    <div>
-                        <h2 style="margin-bottom: var(--spacing-base);">Què és el Cloud Computing?</h2>
-
-                        <p style="margin-bottom: var(--spacing-base); font-size: var(--font-size-md); line-height: 1.4;">El <strong>cloud computing</strong> és la distribució de serveis informàtics a través d'Internet. En lloc de tenir servidors físics a la empresa, s'utilitzen els recursos d'un centre de dades remot.</p>
-
-                        <h3 style="color: var(--color-accent); margin-bottom: var(--spacing-xs); font-size: var(--font-size-base);">Què ofereix el Cloud?</h3>
-                        <ul style="font-size: var(--font-size-sm); line-height: 1.3; margin-bottom: var(--spacing-sm); list-style: none; padding-left: 0;">
-                            <li style="margin-bottom: 2px;"><strong>🖥️ Servidors virtuals:</strong> Ordinadors potents accessibles des d'Internet</li>
-                            <li style="margin-bottom: 2px;"><strong>💾 Emmagatzematge:</strong> Espai il·limitat (o limitat) per guardar dades i arxius</li>
-                            <li style="margin-bottom: 2px;"><strong>🗃️ Bases de dades:</strong> Sistemes per organitzar i consultar informació</li>
-                            <li style="margin-bottom: 2px;"><strong>🛠️ Aplicacions:</strong> Programes que funcionen directament al navegador</li>
-                            <li style="margin-bottom: 2px;"><strong>🔐 Seguretat:</strong> Protecció avançada i còpies de seguretat automàtiques</li>
-                        </ul>
-
-                        <h3 style="color: var(--color-accent); margin-bottom: var(--spacing-xs); font-size: var(--font-size-base);">Avantatges clau:</h3>
-                        <p style="font-size: var(--font-size-sm); line-height: 1.3; margin: 0;"><strong>Escalabilitat:</strong> Creix o decreix segons necessitats • <strong>Accessibilitat:</strong> Accés des de qualsevol dispositiu • <strong>Eficiència:</strong> Menys inversió inicial, més flexibilitat • <strong>Manteniment:</strong> El proveïdor s'encarrega de tot</p>
-                    </div>
-
-                    <!-- Right Side: Image -->
-                    <div style="text-align: center;">
-                        <img src="./img/server.jpg" alt="Centre de dades amb servidors cloud" style="width: 100%; height: 400px; object-fit: cover; object-position: center;">
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
+      </div>
     </div>
 
-    <!-- Navigation Hint -->
-    <div class="navigation-hint">
-        <p>Utilitza les fletxes ← → o fes clic als botons per navegar</p>
-    </div>
-
-    <!-- Progress Percentage -->
-    <div class="progress-percentage" id="progressPercentage">
-        8%
-    </div>
-
-    <!-- QR Code - Fixed Right Side (only visible on slide 3) -->
-    <div class="qr-fixed" id="qrFixed">
-        <div class="qr-container">
-            <div id="qrContainer"></div>
-            <p class="qr-text">Escaneja per participar des del teu mòbil</p>
-        </div>
-    </div>
-
-    <script src="scripts/ra1.js"></script>
-    <script src="scripts/simple-qr.js"></script>
-    <script src="scripts/cross-device-sync.js"></script>
-    <script src="scripts/data-clustering.js"></script>
-</body>
+    <script src="./scripts/native-clean-pdf-slideshow.js"></script>
+  </body>
 </html>
