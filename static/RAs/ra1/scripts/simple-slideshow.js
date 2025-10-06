@@ -89,8 +89,8 @@ async function loadSlide(slideIndex) {
   // Clear existing hyperlinks
   clearHyperlinks();
 
-  // Use thumbnail images since PNG files are not available in RA1
-  const thumbnailPath = `./RA1/assets/${slideId}/thumbnail.jpeg`;
+  // Use individual PDF slides from slides directory
+  const slidePath = `./slides/slide_${String(slideIndex + 1).padStart(3, '0')}.pdf`;
 
   slideImg.onload = async () => {
     currentSlide = slideIndex;
@@ -104,7 +104,7 @@ async function loadSlide(slideIndex) {
     console.error('Failed to load slide:', slideId);
   };
 
-  slideImg.src = thumbnailPath;
+  slideImg.src = slidePath;
 }
 
 function clearHyperlinks() {
@@ -114,7 +114,8 @@ function clearHyperlinks() {
 
 async function loadHyperlinks(slideId) {
   try {
-    const response = await fetch(`./RA1/assets/${slideId}/${slideId}.json`);
+    // No hyperlinks data available in simplified structure
+    return;
     if (!response.ok) return;
 
     const slideData = await response.json();

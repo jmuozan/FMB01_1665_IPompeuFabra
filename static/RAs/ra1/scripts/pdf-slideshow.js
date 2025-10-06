@@ -21,7 +21,7 @@ function updateSlideInfo() {
 async function loadPDF() {
   try {
     console.log('Loading PDF...');
-    const loadingTask = pdfjsLib.getDocument('./RA1/RA1.pdf');
+    const loadingTask = pdfjsLib.getDocument('./slides/slide_001.pdf');
     pdfDoc = await loadingTask.promise;
     totalSlides = pdfDoc.numPages;
     console.log(`PDF loaded with ${totalSlides} pages`);
@@ -90,7 +90,7 @@ function loadThumbnailFallback() {
 
   canvas.style.display = 'none';
   img.style.display = 'block';
-  img.src = './RA1/assets/754EBD94-49F3-4028-B98E-FFAD0C99AD36/thumbnail.jpeg';
+  img.src = './slides/slide_001.pdf';
 }
 
 function changeSlide(direction) {
