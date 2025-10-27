@@ -1,6 +1,6 @@
 // Native PDF slideshow with clean design using iframes and PDF.js viewer
 let currentSlide = 0;
-let totalSlides = 85;
+let totalSlides = 111;
 
 function updateSlideInfo() {
   const slideInfo = document.getElementById('slide-info');
