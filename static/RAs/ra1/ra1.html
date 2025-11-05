@@ -194,12 +194,133 @@
         text-align: center;
         margin-bottom: 2rem;
       }
+
+      /* Responsive improvements */
+      @media (max-width: 1023px) {
+        .slideshow-container {
+          height: auto;
+          min-height: 60vh;
+          margin: 0.5rem 0;
+        }
+
+        .slide-display {
+          height: auto;
+          min-height: 60vh;
+        }
+
+        .slide-controls {
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          padding: 8px 15px;
+          gap: 10px;
+        }
+
+        .slide-controls button {
+          width: 36px;
+          height: 36px;
+          font-size: 18px;
+        }
+
+        #slide-info {
+          font-size: 12px;
+          min-width: 100px;
+        }
+
+        .ra-content {
+          padding: 0.25rem;
+        }
+
+        .ra-title {
+          font-size: 1.8rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .ra-subtitle {
+          font-size: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        #current-slide-img {
+          max-height: 65vh;
+          min-height: auto;
+          width: 100%;
+          height: auto;
+        }
+
+        .pdf-container {
+          height: auto;
+          min-height: 50vh;
+          aspect-ratio: 16/9;
+        }
+
+        #pdf-iframe {
+          height: auto;
+          min-height: 50vh;
+        }
+      }
+
+      @media (max-width: 530px) {
+        .slideshow-container {
+          height: auto;
+          min-height: 50vh;
+          margin: 0.25rem 0;
+        }
+
+        .slide-display {
+          min-height: 50vh;
+        }
+
+        .slide-controls {
+          padding: 6px 12px;
+          gap: 8px;
+        }
+
+        .slide-controls button {
+          width: 32px;
+          height: 32px;
+          font-size: 16px;
+        }
+
+        #slide-info {
+          font-size: 11px;
+          min-width: 80px;
+        }
+
+        .ra-title {
+          font-size: 1.5rem;
+        }
+
+        .ra-subtitle {
+          font-size: 0.9rem;
+        }
+
+        #current-slide-img {
+          max-height: 55vh;
+          min-height: auto;
+          width: 100%;
+          height: auto;
+        }
+
+        .pdf-container {
+          min-height: 40vh;
+          aspect-ratio: 16/9;
+        }
+
+        #pdf-iframe {
+          min-height: 40vh;
+        }
+      }
     </style>
   </head>
   <body>
     <nav class="navbar">
       <a href="../../../index.html" class="navbar__logo">FMB0_1665</a>
-      <div class="navbar__bars"><i class="fas fa-bars"></i></div>
+      <div class="navbar__bars">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
       <div class="navbar__menu">
         <a href="./ra1.html" class="navbar__menu--links">RA1</a>
         <a href="../ra2/ra2.html" class="navbar__menu--links">RA2</a>
@@ -256,5 +377,6 @@
     </div>
 
     <script src="./scripts/native-clean-pdf-slideshow.js"></script>
+    <script src="../../../js/menu.js"></script>
   </body>
 </html>
