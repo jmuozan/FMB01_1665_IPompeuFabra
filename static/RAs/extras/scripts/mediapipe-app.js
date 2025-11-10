@@ -26,6 +26,7 @@ class MediaPipeApp {
     this.recordedChunks = [];
     this.recordingStartTime = null;
     this.recordingInterval = null;
+    this.recordingMimeType = null;
     this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     this.currentFacingMode = this.isMobile ? 'environment' : 'user'; // Start with back camera on mobile, front on desktop
     this.availableCameras = [];
@@ -374,17 +375,34 @@ class MediaPipeApp {
       // Create a stream from the canvas
       const canvasStream = this.canvasElement.captureStream(30); // 30 FPS
 
-      // Setup MediaRecorder
+      // Try different mimeTypes in order of preference
+      const mimeTypes = [
+        'video/mp4',                    // MP4 format (iOS preference)
+        'video/webm;codecs=h264',       // WebM with H264 (good mobile support)
+        'video/webm;codecs=vp9',        // WebM with VP9 (desktop)
+        'video/webm;codecs=vp8',        // WebM with VP8 (older devices)
+        'video/webm',                   // Basic WebM
+      ];
+
+      let selectedMimeType = '';
+      for (const mimeType of mimeTypes) {
+        if (MediaRecorder.isTypeSupported(mimeType)) {
+          selectedMimeType = mimeType;
+          console.log('Using mimeType:', mimeType);
+          break;
+        }
+      }
+
+      if (!selectedMimeType) {
+        throw new Error('No supported video format found');
+      }
+
       const options = {
-        mimeType: 'video/webm;codecs=vp9',
+        mimeType: selectedMimeType,
         videoBitsPerSecond: 2500000 // 2.5 Mbps
       };
 
-      // Fallback for Safari
-      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-        options.mimeType = 'video/webm';
-      }
-
+      this.recordingMimeType = selectedMimeType;
       this.mediaRecorder = new MediaRecorder(canvasStream, options);
       this.recordedChunks = [];
 
@@ -454,12 +472,22 @@ class MediaPipeApp {
       return;
     }
 
-    const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
+    // Determine file extension based on MIME type
+    let extension = 'webm';
+    if (this.recordingMimeType) {
+      if (this.recordingMimeType.includes('mp4')) {
+        extension = 'mp4';
+      } else if (this.recordingMimeType.includes('webm')) {
+        extension = 'webm';
+      }
+    }
+
+    const blob = new Blob(this.recordedChunks, { type: this.recordingMimeType || 'video/webm' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.style.display = 'none';
     a.href = url;
-    a.download = `mediapipe-recording-${Date.now()}.webm`;
+    a.download = `mediapipe-recording-${Date.now()}.${extension}`;
     document.body.appendChild(a);
     a.click();
 
