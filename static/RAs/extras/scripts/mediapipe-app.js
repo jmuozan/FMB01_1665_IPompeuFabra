@@ -26,7 +26,8 @@ class MediaPipeApp {
     this.recordedChunks = [];
     this.recordingStartTime = null;
     this.recordingInterval = null;
-    this.currentFacingMode = 'user'; // Start with front camera
+    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    this.currentFacingMode = this.isMobile ? 'environment' : 'user'; // Start with back camera on mobile, front on desktop
     this.availableCameras = [];
 
     // MediaPipe instances
@@ -53,8 +54,8 @@ class MediaPipeApp {
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.availableCameras = devices.filter(device => device.kind === 'videoinput');
 
-      // Show switch camera button if multiple cameras are available
-      if (this.availableCameras.length > 1) {
+      // Show switch camera button if multiple cameras are available or on mobile
+      if (this.availableCameras.length > 1 || this.isMobile) {
         this.switchCameraButton.style.display = 'inline-block';
       }
     } catch (error) {
@@ -78,16 +79,14 @@ class MediaPipeApp {
 
   async startCamera() {
     try {
-      // Detect if mobile device
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const isPortrait = window.innerHeight > window.innerWidth;
 
       // Request camera access with appropriate constraints
       const constraints = {
         video: {
           facingMode: this.currentFacingMode,
-          width: { ideal: isMobile && isPortrait ? 720 : 1280 },
-          height: { ideal: isMobile && isPortrait ? 1280 : 720 }
+          width: { ideal: this.isMobile && isPortrait ? 720 : 1280 },
+          height: { ideal: this.isMobile && isPortrait ? 1280 : 720 }
         },
         audio: false
       };
