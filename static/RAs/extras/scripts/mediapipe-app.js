@@ -83,11 +83,12 @@ class MediaPipeApp {
       const isPortrait = window.innerHeight > window.innerWidth;
 
       // Request camera access with appropriate constraints
+      // Force portrait mode on mobile devices for better vertical video
       const constraints = {
         video: {
           facingMode: this.currentFacingMode,
-          width: { ideal: this.isMobile && isPortrait ? 720 : 1280 },
-          height: { ideal: this.isMobile && isPortrait ? 1280 : 720 }
+          width: { ideal: this.isMobile ? 720 : 1280 },
+          height: { ideal: this.isMobile ? 1280 : 720 }
         },
         audio: false
       };
@@ -373,15 +374,29 @@ class MediaPipeApp {
   startRecording() {
     try {
       // Create a stream from the canvas
-      const canvasStream = this.canvasElement.captureStream(30); // 30 FPS
+      let canvasStream;
+      try {
+        // Try to capture stream with specified framerate
+        canvasStream = this.canvasElement.captureStream(30); // 30 FPS
+      } catch (e) {
+        // Fallback for browsers that don't support framerate parameter
+        console.warn('captureStream with framerate not supported, using default');
+        canvasStream = this.canvasElement.captureStream();
+      }
+
+      // Check if we got a valid stream
+      if (!canvasStream || canvasStream.getVideoTracks().length === 0) {
+        throw new Error('Failed to capture canvas stream');
+      }
 
       // Try different mimeTypes in order of preference
+      // Firefox mobile prefers basic formats
       const mimeTypes = [
-        'video/mp4',                    // MP4 format (iOS preference)
-        'video/webm;codecs=h264',       // WebM with H264 (good mobile support)
-        'video/webm;codecs=vp9',        // WebM with VP9 (desktop)
-        'video/webm;codecs=vp8',        // WebM with VP8 (older devices)
-        'video/webm',                   // Basic WebM
+        'video/webm;codecs=vp8',        // WebM with VP8 (best Firefox mobile support)
+        'video/webm',                   // Basic WebM (fallback for Firefox)
+        'video/webm;codecs=vp9',        // WebM with VP9
+        'video/webm;codecs=h264',       // WebM with H264
+        'video/mp4',                    // MP4 format (iOS/Safari)
       ];
 
       let selectedMimeType = '';
@@ -394,29 +409,48 @@ class MediaPipeApp {
       }
 
       if (!selectedMimeType) {
-        throw new Error('No supported video format found');
+        // Last resort: try without specifying mimeType
+        console.warn('No specific mimeType supported, using browser default');
+        selectedMimeType = '';
       }
 
-      const options = {
-        mimeType: selectedMimeType,
-        videoBitsPerSecond: 2500000 // 2.5 Mbps
-      };
+      // Configure MediaRecorder options
+      const options = {};
+      if (selectedMimeType) {
+        options.mimeType = selectedMimeType;
+      }
+      // Use lower bitrate for mobile compatibility
+      if (this.isMobile) {
+        options.videoBitsPerSecond = 1500000; // 1.5 Mbps for mobile
+      } else {
+        options.videoBitsPerSecond = 2500000; // 2.5 Mbps for desktop
+      }
 
-      this.recordingMimeType = selectedMimeType;
+      this.recordingMimeType = selectedMimeType || 'video/webm';
       this.mediaRecorder = new MediaRecorder(canvasStream, options);
       this.recordedChunks = [];
 
       this.mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
+        if (event.data && event.data.size > 0) {
           this.recordedChunks.push(event.data);
+          console.log('Recorded chunk:', event.data.size, 'bytes');
         }
       };
 
+      this.mediaRecorder.onerror = (event) => {
+        console.error('MediaRecorder error:', event);
+        alert('Error durant la gravació. Proveu de nou.');
+        this.stopRecording();
+      };
+
       this.mediaRecorder.onstop = () => {
+        console.log('Recording stopped. Total chunks:', this.recordedChunks.length);
         this.downloadButton.disabled = false;
       };
 
-      this.mediaRecorder.start(100); // Collect data every 100ms
+      // Use larger timeslice for Firefox mobile compatibility
+      const timeslice = this.isMobile ? 1000 : 100; // 1 second for mobile, 100ms for desktop
+      this.mediaRecorder.start(timeslice);
 
       // Start recording timer
       this.recordingStartTime = Date.now();
