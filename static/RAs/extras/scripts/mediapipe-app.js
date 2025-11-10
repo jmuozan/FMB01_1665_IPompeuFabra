@@ -6,6 +6,7 @@ class MediaPipeApp {
     this.canvasElement = document.getElementById('canvasElement');
     this.startButton = document.getElementById('startButton');
     this.stopButton = document.getElementById('stopButton');
+    this.switchCameraButton = document.getElementById('switchCameraButton');
     this.recordButton = document.getElementById('recordButton');
     this.stopRecordButton = document.getElementById('stopRecordButton');
     this.downloadButton = document.getElementById('downloadButton');
@@ -25,6 +26,8 @@ class MediaPipeApp {
     this.recordedChunks = [];
     this.recordingStartTime = null;
     this.recordingInterval = null;
+    this.currentFacingMode = 'user'; // Start with front camera
+    this.availableCameras = [];
 
     // MediaPipe instances
     this.pose = null;
@@ -39,14 +42,30 @@ class MediaPipeApp {
     this.init();
   }
 
-  init() {
+  async init() {
     this.canvasCtx = this.canvasElement.getContext('2d');
+    await this.checkAvailableCameras();
     this.setupEventListeners();
+  }
+
+  async checkAvailableCameras() {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      this.availableCameras = devices.filter(device => device.kind === 'videoinput');
+
+      // Show switch camera button if multiple cameras are available
+      if (this.availableCameras.length > 1) {
+        this.switchCameraButton.style.display = 'inline-block';
+      }
+    } catch (error) {
+      console.error('Error enumerating devices:', error);
+    }
   }
 
   setupEventListeners() {
     this.startButton.addEventListener('click', () => this.startCamera());
     this.stopButton.addEventListener('click', () => this.stopCamera());
+    this.switchCameraButton.addEventListener('click', () => this.switchCamera());
     this.recordButton.addEventListener('click', () => this.startRecording());
     this.stopRecordButton.addEventListener('click', () => this.stopRecording());
     this.downloadButton.addEventListener('click', () => this.downloadVideo());
@@ -59,16 +78,21 @@ class MediaPipeApp {
 
   async startCamera() {
     try {
-      // Request camera access
-      this.stream = await navigator.mediaDevices.getUserMedia({
+      // Detect if mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isPortrait = window.innerHeight > window.innerWidth;
+
+      // Request camera access with appropriate constraints
+      const constraints = {
         video: {
-          facingMode: 'user',
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+          facingMode: this.currentFacingMode,
+          width: { ideal: isMobile && isPortrait ? 720 : 1280 },
+          height: { ideal: isMobile && isPortrait ? 1280 : 720 }
         },
         audio: false
-      });
+      };
 
+      this.stream = await navigator.mediaDevices.getUserMedia(constraints);
       this.videoElement.srcObject = this.stream;
 
       // Wait for video metadata to load
@@ -82,12 +106,27 @@ class MediaPipeApp {
       this.canvasElement.width = this.videoElement.videoWidth;
       this.canvasElement.height = this.videoElement.videoHeight;
 
+      // Adjust video wrapper aspect ratio based on video orientation
+      const videoWrapper = document.querySelector('.video-wrapper');
+      const aspectRatio = this.videoElement.videoHeight / this.videoElement.videoWidth;
+
+      if (aspectRatio > 1) {
+        // Portrait orientation
+        videoWrapper.classList.add('portrait');
+        videoWrapper.style.paddingBottom = (aspectRatio * 100) + '%';
+      } else {
+        // Landscape orientation
+        videoWrapper.classList.remove('portrait');
+        videoWrapper.style.paddingBottom = (aspectRatio * 100) + '%';
+      }
+
       // Initialize MediaPipe models
       await this.initializeMediaPipe();
 
       // Update UI
       this.startButton.disabled = true;
       this.stopButton.disabled = false;
+      this.switchCameraButton.disabled = false;
       this.recordButton.disabled = false;
       this.statusIndicator.textContent = 'Càmera activa';
       this.statusIndicator.style.background = 'rgba(40, 167, 69, 0.9)';
@@ -99,6 +138,19 @@ class MediaPipeApp {
       console.error('Error accessing camera:', error);
       alert('Error al accedir a la càmera. Assegura\'t que has donat permisos.');
     }
+  }
+
+  async switchCamera() {
+    // Toggle between front and back camera
+    this.currentFacingMode = this.currentFacingMode === 'user' ? 'environment' : 'user';
+
+    // Stop current camera
+    if (this.stream) {
+      this.stream.getTracks().forEach(track => track.stop());
+    }
+
+    // Restart camera with new facing mode
+    await this.startCamera();
   }
 
   async initializeMediaPipe() {
@@ -312,6 +364,7 @@ class MediaPipeApp {
     // Update UI
     this.startButton.disabled = false;
     this.stopButton.disabled = true;
+    this.switchCameraButton.disabled = true;
     this.recordButton.disabled = true;
     this.statusIndicator.textContent = 'Càmera aturada';
     this.statusIndicator.style.background = 'rgba(0, 0, 0, 0.7)';

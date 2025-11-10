@@ -153,7 +153,13 @@
       .video-wrapper {
         position: relative;
         width: 100%;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        padding-bottom: 56.25%; /* 16:9 aspect ratio - will be dynamically adjusted */
+      }
+
+      .video-wrapper.portrait {
+        padding-bottom: 133.33%; /* 3:4 aspect ratio for portrait */
+        max-width: 600px;
+        margin: 0 auto;
       }
 
       #videoElement {
@@ -162,7 +168,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
       }
 
       #canvasElement {
@@ -171,6 +177,7 @@
         left: 0;
         width: 100%;
         height: 100%;
+        object-fit: contain;
       }
 
       .status-indicator {
@@ -287,6 +294,7 @@
         <div class="control-group">
           <button id="startButton" class="btn btn-primary">Iniciar</button>
           <button id="stopButton" class="btn btn-secondary" disabled>Aturar</button>
+          <button id="switchCameraButton" class="btn btn-secondary" disabled style="display: none;">Canviar càmera</button>
           <button id="recordButton" class="btn btn-success" disabled>Gravar</button>
           <button id="stopRecordButton" class="btn btn-danger" disabled>Stop</button>
           <button id="downloadButton" class="btn btn-secondary" disabled>Descarregar</button>
