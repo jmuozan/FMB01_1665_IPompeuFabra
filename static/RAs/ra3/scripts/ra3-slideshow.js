@@ -1,7 +1,6 @@
-// Native PDF slideshow for RA3 - navigates through pages of a single PDF
+// Native PDF slideshow with clean design using iframes and PDF.js viewer
 let currentSlide = 0;
 let totalSlides = 44;
-let loadingTimeout = null;
 
 function updateSlideInfo() {
   const slideInfo = document.getElementById('slide-info');
@@ -16,17 +15,17 @@ function updateSlideInfo() {
 function loadSlide(slideIndex) {
   if (slideIndex < 0 || slideIndex >= totalSlides) return;
 
-  // Use the single PDF but navigate to specific page
-  const pdfPath = './RA3/RA3.pdf';
-  const pageNumber = slideIndex + 1;
+  // Format slide number with leading zeros
+  const slideNumber = String(slideIndex + 1).padStart(3, '0');
+  const pdfPath = `./slides/slide_${slideNumber}.pdf`;
 
   // Use direct PDF embedding with parameters to force landscape/horizontal orientation
-  const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH&zoom=page-width&pagemode=none&page=${pageNumber}`;
+  const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH&zoom=page-width&pagemode=none&page=1&nameddest=&rotation=0`;
 
   // Get the iframe element
   const pdfIframe = document.getElementById('pdf-iframe');
 
-  // Show loading briefly
+  // Show loading
   showLoading();
 
   // Update the iframe source
@@ -36,15 +35,7 @@ function loadSlide(slideIndex) {
   currentSlide = slideIndex;
   updateSlideInfo();
 
-  console.log(`Loading slide ${slideIndex + 1} (page ${pageNumber}): ${pdfPath}`);
-
-  // Auto-hide loading after a short time (PDF navigation is usually instant)
-  if (loadingTimeout) {
-    clearTimeout(loadingTimeout);
-  }
-  loadingTimeout = setTimeout(() => {
-    hideLoading();
-  }, 300);
+  console.log(`Loading slide ${slideIndex + 1}: ${pdfPath}`);
 }
 
 function showLoading() {
@@ -82,7 +73,7 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('RA3 PDF slideshow loading...');
+  console.log('Native clean PDF slideshow loading...');
   updateSlideInfo();
 
   // Add event listener for iframe load
