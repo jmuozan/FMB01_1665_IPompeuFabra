@@ -1,4 +1,3 @@
-// Native PDF slideshow with clean design using iframes and PDF.js viewer
 let currentSlide = 0;
 let totalSlides = 44;
 
@@ -19,19 +18,16 @@ function loadSlide(slideIndex) {
   const slideNumber = String(slideIndex + 1).padStart(3, '0');
   const pdfPath = `./slides/slide_${slideNumber}.pdf`;
 
-  // Use direct PDF embedding with parameters to force landscape/horizontal orientation
+  // PDF embedding with parameters to forceorientation
   const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH&zoom=page-width&pagemode=none&page=1&nameddest=&rotation=0`;
 
-  // Get the iframe element
+  // iframe
   const pdfIframe = document.getElementById('pdf-iframe');
 
-  // Show loading
+  // loading
   showLoading();
-
-  // Update the iframe source
   pdfIframe.src = pdfUrl;
 
-  // Update current slide
   currentSlide = slideIndex;
   updateSlideInfo();
 
@@ -59,7 +55,7 @@ function changeSlide(direction) {
   }
 }
 
-// Keyboard navigation
+// Keyboard keys usage
 document.addEventListener('keydown', (e) => {
   switch(e.key) {
     case 'ArrowLeft':
@@ -71,19 +67,18 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Initialize when DOM is loaded
+// wait until DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Native clean PDF slideshow loading...');
   updateSlideInfo();
 
-  // Add event listener for iframe load
+  // Event listener
   const pdfIframe = document.getElementById('pdf-iframe');
 
   pdfIframe.addEventListener('load', () => {
     hideLoading();
     console.log('PDF iframe loaded successfully');
 
-    // Try to modify PDF viewer layout after load
     setTimeout(() => {
       try {
         const iframeDoc = pdfIframe.contentDocument || pdfIframe.contentWindow.document;
@@ -96,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (secondaryToolbar) secondaryToolbar.style.display = 'none';
         if (sidebarContainer) sidebarContainer.style.display = 'none';
 
-        // Force horizontal layout for viewerContainer
+        // Force horizontal layout for slideshow
         if (viewerContainer) {
           viewerContainer.style.writingMode = 'horizontal-tb';
           viewerContainer.style.direction = 'ltr';
@@ -106,12 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log('Applied horizontal layout to viewerContainer');
         }
       } catch (e) {
-        // Cross-origin restrictions, URL parameters should handle it
         console.log('Using URL parameters for layout control:', e.message);
       }
     }, 1000);
   });
 
-  // Load first slide
+  // first slide :)))
   loadSlide(0);
 });
