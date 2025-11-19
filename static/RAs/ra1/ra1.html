@@ -141,6 +141,23 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
 
+      #debug-info {
+        position: fixed;
+        bottom: 80px;
+        left: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.9);
+        color: #0f0;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 10px;
+        z-index: 10000;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+      }
+
       .slide-controls {
         position: absolute;
         bottom: 20px;
@@ -378,6 +395,7 @@
                 <iframe id="pdf-iframe" src=""></iframe>
               </div>
               <div id="loading-indicator">Loading slide...</div>
+              <div id="debug-info"></div>
               <div class="slide-controls">
                 <button id="prev-btn" onclick="changeSlide(-1)">◀</button>
                 <span id="slide-info">1 / 63 (2%)</span>

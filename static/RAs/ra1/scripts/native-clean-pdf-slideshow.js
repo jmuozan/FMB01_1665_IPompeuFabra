@@ -2,10 +2,25 @@
 let currentSlide = 0;
 let totalSlides = 63;
 const isMobile = window.innerWidth <= 1023;
+let debugMessages = [];
+
+// Debug logging function
+function debugLog(message) {
+  debugMessages.push(message);
+  console.log(message);
+  const debugDiv = document.getElementById('debug-info');
+  if (debugDiv && isMobile) {
+    debugDiv.style.display = 'block';
+    debugDiv.innerHTML = debugMessages.slice(-20).join('<br>');
+  }
+}
 
 // Configure PDF.js worker
 if (typeof pdfjsLib !== 'undefined') {
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  debugLog('PDF.js loaded successfully');
+} else {
+  debugLog('ERROR: PDF.js not loaded!');
 }
 
 function updateSlideInfo() {
@@ -24,25 +39,42 @@ async function renderPDFToCanvas(pdfPath) {
   const container = document.querySelector('.pdf-container');
 
   try {
+    debugLog('Starting PDF render: ' + pdfPath);
+    debugLog('Container: ' + container.clientWidth + 'x' + container.clientHeight);
+
     const loadingTask = pdfjsLib.getDocument(pdfPath);
     const pdf = await loadingTask.promise;
+    debugLog('PDF loaded, pages: ' + pdf.numPages);
+
     const page = await pdf.getPage(1);
+    debugLog('Page 1 loaded');
 
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;
 
     const viewport = page.getViewport({ scale: 1.0 });
+    debugLog('Viewport: ' + viewport.width + 'x' + viewport.height);
+
     const scale = Math.min(
       containerWidth / viewport.width,
       containerHeight / viewport.height
-    ) * 0.95; // 95% to add some padding
+    ) * 0.95;
+
+    debugLog('Scale: ' + scale.toFixed(2));
 
     const scaledViewport = page.getViewport({ scale: scale });
 
     canvas.width = scaledViewport.width;
     canvas.height = scaledViewport.height;
 
+    debugLog('Canvas: ' + canvas.width + 'x' + canvas.height);
+
     const context = canvas.getContext('2d');
+
+    // Fill with white background
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
     const renderContext = {
       canvasContext: context,
       viewport: scaledViewport
@@ -54,12 +86,15 @@ async function renderPDFToCanvas(pdfPath) {
     canvas.style.display = 'block';
     iframe.style.display = 'none';
 
-    console.log('PDF rendered to canvas successfully');
+    debugLog('✓ PDF rendered successfully!');
   } catch (error) {
-    console.error('Error rendering PDF to canvas:', error);
-    // Fallback to iframe
+    debugLog('ERROR: ' + error.message);
+    // Fallback to iframe with minimal parameters
     canvas.style.display = 'none';
     iframe.style.display = 'block';
+    const simplePdfUrl = `${pdfPath}`;
+    iframe.src = simplePdfUrl;
+    debugLog('Fallback to iframe: ' + simplePdfUrl);
   }
 }
 
@@ -77,8 +112,14 @@ function loadSlide(slideIndex) {
   currentSlide = slideIndex;
   updateSlideInfo();
 
+  debugLog('--- Loading slide ' + (slideIndex + 1) + ' ---');
+  debugLog('Path: ' + pdfPath);
+  debugLog('Mobile: ' + isMobile);
+  debugLog('Window width: ' + window.innerWidth);
+
   if (isMobile && typeof pdfjsLib !== 'undefined') {
     // Use canvas rendering for mobile
+    debugLog('Using canvas rendering');
     renderPDFToCanvas(pdfPath).finally(() => hideLoading());
   } else {
     // Use iframe for desktop
@@ -86,12 +127,11 @@ function loadSlide(slideIndex) {
     const pdfIframe = document.getElementById('pdf-iframe');
     const canvas = document.getElementById('pdf-canvas');
 
+    debugLog('Using iframe method');
     canvas.style.display = 'none';
     pdfIframe.style.display = 'block';
     pdfIframe.src = pdfUrl;
   }
-
-  console.log(`Loading slide ${slideIndex + 1}: ${pdfPath}`);
 }
 
 function showLoading() {
