@@ -19,7 +19,10 @@ function loadSlide(slideIndex) {
   const pdfPath = `./slides/slide_${slideNumber}.pdf`;
 
   // PDF embedding with parameters to forceorientation
-  const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=page-fit&pagemode=none&page=1&nameddest=&rotation=0`;
+  // Use zoom=50 for mobile to show the full page
+  const isMobile = window.innerWidth <= 1023;
+  const zoomLevel = isMobile ? '50' : 'page-fit';
+  const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=${zoomLevel}&pagemode=none&page=1&nameddest=&rotation=0`;
 
   // iframe
   const pdfIframe = document.getElementById('pdf-iframe');
