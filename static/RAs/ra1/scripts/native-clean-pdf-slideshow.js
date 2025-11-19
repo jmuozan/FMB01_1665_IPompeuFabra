@@ -1,6 +1,12 @@
 // Native PDF slideshow with clean design using iframes and PDF.js viewer
 let currentSlide = 0;
 let totalSlides = 63;
+const isMobile = window.innerWidth <= 1023;
+
+// Configure PDF.js worker
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
 
 function updateSlideInfo() {
   const slideInfo = document.getElementById('slide-info');
@@ -12,6 +18,51 @@ function updateSlideInfo() {
   document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
 }
 
+async function renderPDFToCanvas(pdfPath) {
+  const canvas = document.getElementById('pdf-canvas');
+  const iframe = document.getElementById('pdf-iframe');
+  const container = document.querySelector('.pdf-container');
+
+  try {
+    const loadingTask = pdfjsLib.getDocument(pdfPath);
+    const pdf = await loadingTask.promise;
+    const page = await pdf.getPage(1);
+
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+
+    const viewport = page.getViewport({ scale: 1.0 });
+    const scale = Math.min(
+      containerWidth / viewport.width,
+      containerHeight / viewport.height
+    ) * 0.95; // 95% to add some padding
+
+    const scaledViewport = page.getViewport({ scale: scale });
+
+    canvas.width = scaledViewport.width;
+    canvas.height = scaledViewport.height;
+
+    const context = canvas.getContext('2d');
+    const renderContext = {
+      canvasContext: context,
+      viewport: scaledViewport
+    };
+
+    await page.render(renderContext).promise;
+
+    // Show canvas, hide iframe
+    canvas.style.display = 'block';
+    iframe.style.display = 'none';
+
+    console.log('PDF rendered to canvas successfully');
+  } catch (error) {
+    console.error('Error rendering PDF to canvas:', error);
+    // Fallback to iframe
+    canvas.style.display = 'none';
+    iframe.style.display = 'block';
+  }
+}
+
 function loadSlide(slideIndex) {
   if (slideIndex < 0 || slideIndex >= totalSlides) return;
 
@@ -19,24 +70,26 @@ function loadSlide(slideIndex) {
   const slideNumber = String(slideIndex + 1).padStart(3, '0');
   const pdfPath = `./slides/slide_${slideNumber}.pdf`;
 
-  // Use direct PDF embedding with parameters to force landscape/horizontal orientation
-  // Use zoom=50 for mobile to show the full page
-  const isMobile = window.innerWidth <= 1023;
-  const zoomLevel = isMobile ? '50' : 'page-fit';
-  const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=${zoomLevel}&pagemode=none&page=1&nameddest=&rotation=0`;
-
-  // Get the iframe element
-  const pdfIframe = document.getElementById('pdf-iframe');
-
   // Show loading
   showLoading();
-
-  // Update the iframe source
-  pdfIframe.src = pdfUrl;
 
   // Update current slide
   currentSlide = slideIndex;
   updateSlideInfo();
+
+  if (isMobile && typeof pdfjsLib !== 'undefined') {
+    // Use canvas rendering for mobile
+    renderPDFToCanvas(pdfPath).finally(() => hideLoading());
+  } else {
+    // Use iframe for desktop
+    const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=page-fit&pagemode=none&page=1&nameddest=&rotation=0`;
+    const pdfIframe = document.getElementById('pdf-iframe');
+    const canvas = document.getElementById('pdf-canvas');
+
+    canvas.style.display = 'none';
+    pdfIframe.style.display = 'block';
+    pdfIframe.src = pdfUrl;
+  }
 
   console.log(`Loading slide ${slideIndex + 1}: ${pdfPath}`);
 }

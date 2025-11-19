@@ -80,6 +80,16 @@
         border-radius: 8px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #pdf-canvas {
+        max-width: 100%;
+        max-height: 100%;
+        display: none;
+        object-fit: contain;
       }
 
       /* Target PDF viewer internal elements to force horizontal layout */
@@ -364,6 +374,7 @@
           <div class="slide-display">
             <div class="image-wrapper">
               <div class="pdf-container">
+                <canvas id="pdf-canvas"></canvas>
                 <iframe id="pdf-iframe" src=""></iframe>
               </div>
               <div id="loading-indicator">Loading slide...</div>
