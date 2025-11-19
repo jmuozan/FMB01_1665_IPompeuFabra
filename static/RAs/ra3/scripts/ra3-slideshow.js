@@ -19,7 +19,7 @@ function loadSlide(slideIndex) {
   const pdfPath = `./slides/slide_${slideNumber}.pdf`;
 
   // PDF embedding with parameters to forceorientation
-  const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH&zoom=page-width&pagemode=none&page=1&nameddest=&rotation=0`;
+  const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=page-fit&pagemode=none&page=1&nameddest=&rotation=0`;
 
   // iframe
   const pdfIframe = document.getElementById('pdf-iframe');
