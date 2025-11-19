@@ -40,6 +40,15 @@ async function renderPDFToCanvas(pdfPath) {
 
   try {
     debugLog('Starting PDF render: ' + pdfPath);
+
+    // Wait for container to have dimensions
+    let attempts = 0;
+    while (container.clientWidth === 0 && attempts < 10) {
+      debugLog('Waiting for container... attempt ' + attempts);
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+
     debugLog('Container: ' + container.clientWidth + 'x' + container.clientHeight);
 
     const loadingTask = pdfjsLib.getDocument(pdfPath);
@@ -49,8 +58,11 @@ async function renderPDFToCanvas(pdfPath) {
     const page = await pdf.getPage(1);
     debugLog('Page 1 loaded');
 
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
+    // Use window width if container width is still 0
+    let containerWidth = container.clientWidth || window.innerWidth - 20;
+    let containerHeight = container.clientHeight || window.innerHeight * 0.6;
+
+    debugLog('Using dimensions: ' + containerWidth + 'x' + containerHeight);
 
     const viewport = page.getViewport({ scale: 1.0 });
     debugLog('Viewport: ' + viewport.width + 'x' + viewport.height);
