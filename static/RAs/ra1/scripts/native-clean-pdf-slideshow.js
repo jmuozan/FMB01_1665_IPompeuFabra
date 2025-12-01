@@ -8,11 +8,7 @@ let debugMessages = [];
 function debugLog(message) {
   debugMessages.push(message);
   console.log(message);
-  const debugDiv = document.getElementById('debug-info');
-  if (debugDiv && isMobile) {
-    debugDiv.style.display = 'block';
-    debugDiv.innerHTML = debugMessages.slice(-20).join('<br>');
-  }
+  // Debug div disabled - logs only go to console
 }
 
 // Configure PDF.js worker
