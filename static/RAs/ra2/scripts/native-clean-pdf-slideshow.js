@@ -70,18 +70,16 @@ function loadSlide(slideIndex) {
   const slideNumber = String(slideIndex + 1).padStart(3, '0');
   const pdfPath = `./slides/slide_${slideNumber}.pdf`;
 
-  // Show loading
-  showLoading();
-
   // Update current slide
   currentSlide = slideIndex;
   updateSlideInfo();
 
   if (isMobile && typeof pdfjsLib !== 'undefined') {
     // Use canvas rendering for mobile
-    renderPDFToCanvas(pdfPath).finally(() => hideLoading());
+    renderPDFToCanvas(pdfPath);
   } else {
     // Use iframe for desktop
+    showLoading();
     const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=page-fit&pagemode=none&page=1&nameddest=&rotation=0`;
     const pdfIframe = document.getElementById('pdf-iframe');
     const canvas = document.getElementById('pdf-canvas');
