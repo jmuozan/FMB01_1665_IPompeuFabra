@@ -22,19 +22,32 @@ async function renderPDFToCanvas(pdfPath) {
   const iframe = document.getElementById('pdf-iframe');
   const container = document.querySelector('.pdf-container');
 
+  // Hide iframe first
+  iframe.style.display = 'none';
+
   try {
+    // Wait for container to have dimensions
+    let attempts = 0;
+    while (container.clientWidth === 0 && attempts < 10) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+
+    // Use window dimensions if container dimensions are not available
+    let containerWidth = container.clientWidth || window.innerWidth - 40;
+    let containerHeight = container.clientHeight || window.innerHeight * 0.5;
+
     const loadingTask = pdfjsLib.getDocument(pdfPath);
     const pdf = await loadingTask.promise;
     const page = await pdf.getPage(1);
 
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
-
     const viewport = page.getViewport({ scale: 1.0 });
+
+    // Calculate scale to fit the container
     const scale = Math.min(
       containerWidth / viewport.width,
       containerHeight / viewport.height
-    ) * 0.95; // 95% to add some padding
+    ) * 0.9; // 90% to add some padding
 
     const scaledViewport = page.getViewport({ scale: scale });
 
@@ -42,6 +55,11 @@ async function renderPDFToCanvas(pdfPath) {
     canvas.height = scaledViewport.height;
 
     const context = canvas.getContext('2d');
+
+    // Fill with white background
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
     const renderContext = {
       canvasContext: context,
       viewport: scaledViewport
@@ -49,9 +67,8 @@ async function renderPDFToCanvas(pdfPath) {
 
     await page.render(renderContext).promise;
 
-    // Show canvas, hide iframe
+    // Show canvas
     canvas.style.display = 'block';
-    iframe.style.display = 'none';
 
     console.log('PDF rendered to canvas successfully');
   } catch (error) {
@@ -59,6 +76,7 @@ async function renderPDFToCanvas(pdfPath) {
     // Fallback to iframe
     canvas.style.display = 'none';
     iframe.style.display = 'block';
+    iframe.src = pdfPath;
   }
 }
 

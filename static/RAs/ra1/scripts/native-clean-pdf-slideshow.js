@@ -34,6 +34,9 @@ async function renderPDFToCanvas(pdfPath) {
   const iframe = document.getElementById('pdf-iframe');
   const container = document.querySelector('.pdf-container');
 
+  // Hide iframe first
+  iframe.style.display = 'none';
+
   try {
     debugLog('Starting PDF render: ' + pdfPath);
 
@@ -45,7 +48,11 @@ async function renderPDFToCanvas(pdfPath) {
       attempts++;
     }
 
-    debugLog('Container: ' + container.clientWidth + 'x' + container.clientHeight);
+    // Use window dimensions if container dimensions are not available
+    let containerWidth = container.clientWidth || window.innerWidth - 40;
+    let containerHeight = container.clientHeight || window.innerHeight * 0.5;
+
+    debugLog('Container: ' + containerWidth + 'x' + containerHeight);
 
     const loadingTask = pdfjsLib.getDocument(pdfPath);
     const pdf = await loadingTask.promise;
@@ -54,19 +61,14 @@ async function renderPDFToCanvas(pdfPath) {
     const page = await pdf.getPage(1);
     debugLog('Page 1 loaded');
 
-    // Use window width if container width is still 0
-    let containerWidth = container.clientWidth || window.innerWidth - 20;
-    let containerHeight = container.clientHeight || window.innerHeight * 0.6;
-
-    debugLog('Using dimensions: ' + containerWidth + 'x' + containerHeight);
-
     const viewport = page.getViewport({ scale: 1.0 });
     debugLog('Viewport: ' + viewport.width + 'x' + viewport.height);
 
+    // Calculate scale to fit the container
     const scale = Math.min(
       containerWidth / viewport.width,
       containerHeight / viewport.height
-    ) * 0.95;
+    ) * 0.9; // 90% to add some padding
 
     debugLog('Scale: ' + scale.toFixed(2));
 
@@ -90,19 +92,18 @@ async function renderPDFToCanvas(pdfPath) {
 
     await page.render(renderContext).promise;
 
-    // Show canvas, hide iframe
+    // Show canvas
     canvas.style.display = 'block';
-    iframe.style.display = 'none';
 
     debugLog('✓ PDF rendered successfully!');
   } catch (error) {
     debugLog('ERROR: ' + error.message);
-    // Fallback to iframe with minimal parameters
+    console.error('Full error:', error);
+    // Fallback to iframe
     canvas.style.display = 'none';
     iframe.style.display = 'block';
-    const simplePdfUrl = `${pdfPath}`;
-    iframe.src = simplePdfUrl;
-    debugLog('Fallback to iframe: ' + simplePdfUrl);
+    iframe.src = pdfPath;
+    debugLog('Fallback to iframe: ' + pdfPath);
   }
 }
 
