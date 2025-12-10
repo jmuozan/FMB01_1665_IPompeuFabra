@@ -1,12 +1,12 @@
-// PDF slideshow implementation using PDF.js
+// Native PDF slideshow with clean design using iframes and PDF.js viewer
 let currentSlide = 0;
-let totalSlides = 63; // From header.json
-let pdfDoc = null;
-let scale = 2.0; // High quality scale
+let totalSlides = 126;
+const isMobile = window.innerWidth <= 1023;
 
-// Load PDF.js
-const pdfjsLib = window['pdfjs-dist/build/pdf'];
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+// Configure PDF.js worker
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
 
 function updateSlideInfo() {
   const slideInfo = document.getElementById('slide-info');
@@ -18,79 +18,110 @@ function updateSlideInfo() {
   document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
 }
 
-async function loadPDF() {
-  try {
-    console.log('Loading PDF...');
-    const loadingTask = pdfjsLib.getDocument('./slides/slide_001.pdf');
-    pdfDoc = await loadingTask.promise;
-    totalSlides = pdfDoc.numPages;
-    console.log(`PDF loaded with ${totalSlides} pages`);
+async function renderPDFToCanvas(pdfPath) {
+  const canvas = document.getElementById('pdf-canvas');
+  const iframe = document.getElementById('pdf-iframe');
+  const container = document.querySelector('.pdf-container');
 
-    // Update the slide info with correct total
-    updateSlideInfo();
-
-    // Load the first page
-    await loadSlide(0);
-  } catch (error) {
-    console.error('Error loading PDF:', error);
-    // Fallback to thumbnail system
-    loadThumbnailFallback();
-  }
-}
-
-async function loadSlide(slideIndex) {
-  if (!pdfDoc || slideIndex < 0 || slideIndex >= totalSlides) return;
+  // Hide iframe first
+  iframe.style.display = 'none';
 
   try {
-    const pageNum = slideIndex + 1; // PDF pages are 1-indexed
-    const page = await pdfDoc.getPage(pageNum);
+    // Wait for container to have dimensions
+    let attempts = 0;
+    while (container.clientWidth === 0 && attempts < 10) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
 
-    // Get the canvas element
-    const canvas = document.getElementById('pdf-canvas');
-    const ctx = canvas.getContext('2d');
+    // Use window dimensions if container dimensions are not available
+    let containerWidth = container.clientWidth || window.innerWidth - 40;
+    let containerHeight = container.clientHeight || window.innerHeight * 0.5;
 
-    // Calculate scale to fit container while maintaining aspect ratio
+    const loadingTask = pdfjsLib.getDocument(pdfPath);
+    const pdf = await loadingTask.promise;
+    const page = await pdf.getPage(1);
+
     const viewport = page.getViewport({ scale: 1.0 });
-    const container = document.querySelector('.slide-display');
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight * 0.9; // Leave some space for controls
 
-    const scaleX = containerWidth / viewport.width;
-    const scaleY = containerHeight / viewport.height;
-    const finalScale = Math.min(scaleX, scaleY) * 0.95; // 95% to leave some margin
+    // Calculate scale to fit the container
+    const scale = Math.min(
+      containerWidth / viewport.width,
+      containerHeight / viewport.height
+    ) * 0.9; // 90% to add some padding
 
-    const scaledViewport = page.getViewport({ scale: finalScale });
+    const scaledViewport = page.getViewport({ scale: scale });
 
-    // Set canvas dimensions
-    canvas.height = scaledViewport.height;
     canvas.width = scaledViewport.width;
+    canvas.height = scaledViewport.height;
 
-    // Render the page
+    const context = canvas.getContext('2d');
+
+    // Fill with white background
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
     const renderContext = {
-      canvasContext: ctx,
+      canvasContext: context,
       viewport: scaledViewport
     };
 
     await page.render(renderContext).promise;
 
-    currentSlide = slideIndex;
-    updateSlideInfo();
+    // Show canvas
+    canvas.style.display = 'block';
 
-    console.log(`Loaded slide ${pageNum}`);
+    console.log('PDF rendered to canvas successfully');
   } catch (error) {
-    console.error(`Error loading slide ${slideIndex}:`, error);
+    console.error('Error rendering PDF to canvas:', error);
+    // Fallback to iframe
+    canvas.style.display = 'none';
+    iframe.style.display = 'block';
+    iframe.src = pdfPath;
   }
 }
 
-function loadThumbnailFallback() {
-  console.log('Using thumbnail fallback');
-  // Hide canvas and show image fallback
-  const canvas = document.getElementById('pdf-canvas');
-  const img = document.getElementById('current-slide-img');
+function loadSlide(slideIndex) {
+  if (slideIndex < 0 || slideIndex >= totalSlides) return;
 
-  canvas.style.display = 'none';
-  img.style.display = 'block';
-  img.src = './slides/slide_001.pdf';
+  // Format slide number with leading zeros
+  const slideNumber = String(slideIndex + 1).padStart(3, '0');
+  const pdfPath = `./slides/slide_${slideNumber}.pdf`;
+
+  // Update current slide
+  currentSlide = slideIndex;
+  updateSlideInfo();
+
+  if (isMobile && typeof pdfjsLib !== 'undefined') {
+    // Use canvas rendering for mobile
+    renderPDFToCanvas(pdfPath);
+  } else {
+    // Use iframe for desktop
+    showLoading();
+    const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=page-fit&pagemode=none&page=1&nameddest=&rotation=0`;
+    const pdfIframe = document.getElementById('pdf-iframe');
+    const canvas = document.getElementById('pdf-canvas');
+
+    canvas.style.display = 'none';
+    pdfIframe.style.display = 'block';
+    pdfIframe.src = pdfUrl;
+  }
+
+  console.log(`Loading slide ${slideIndex + 1}: ${pdfPath}`);
+}
+
+function showLoading() {
+  const loadingDiv = document.getElementById('loading-indicator');
+  if (loadingDiv) {
+    loadingDiv.style.display = 'block';
+  }
+}
+
+function hideLoading() {
+  const loadingDiv = document.getElementById('loading-indicator');
+  if (loadingDiv) {
+    loadingDiv.style.display = 'none';
+  }
 }
 
 function changeSlide(direction) {
@@ -114,13 +145,45 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('PDF slideshow loading...');
-  loadPDF();
-});
+  console.log('Native clean PDF slideshow loading...');
+  updateSlideInfo();
 
-// Handle window resize
-window.addEventListener('resize', () => {
-  if (pdfDoc) {
-    loadSlide(currentSlide);
-  }
+  // Add event listener for iframe load
+  const pdfIframe = document.getElementById('pdf-iframe');
+
+  pdfIframe.addEventListener('load', () => {
+    hideLoading();
+    console.log('PDF iframe loaded successfully');
+
+    // Try to modify PDF viewer layout after load
+    setTimeout(() => {
+      try {
+        const iframeDoc = pdfIframe.contentDocument || pdfIframe.contentWindow.document;
+        const toolbar = iframeDoc.querySelector('#toolbar');
+        const secondaryToolbar = iframeDoc.querySelector('#secondaryToolbar');
+        const sidebarContainer = iframeDoc.querySelector('#sidebarContainer');
+        const viewerContainer = iframeDoc.querySelector('#viewerContainer');
+
+        if (toolbar) toolbar.style.display = 'none';
+        if (secondaryToolbar) secondaryToolbar.style.display = 'none';
+        if (sidebarContainer) sidebarContainer.style.display = 'none';
+
+        // Force horizontal layout for viewerContainer
+        if (viewerContainer) {
+          viewerContainer.style.writingMode = 'horizontal-tb';
+          viewerContainer.style.direction = 'ltr';
+          viewerContainer.style.overflowX = 'auto';
+          viewerContainer.style.overflowY = 'hidden';
+          viewerContainer.style.whiteSpace = 'nowrap';
+          console.log('Applied horizontal layout to viewerContainer');
+        }
+      } catch (e) {
+        // Cross-origin restrictions, URL parameters should handle it
+        console.log('Using URL parameters for layout control:', e.message);
+      }
+    }, 1000);
+  });
+
+  // Load first slide
+  loadSlide(0);
 });
