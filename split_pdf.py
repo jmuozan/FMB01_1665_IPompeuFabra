@@ -9,7 +9,7 @@ from pathlib import Path
 try:
     from PyPDF2 import PdfReader, PdfWriter
 except ImportError:
-    print("PyPDF2 not found. Installing...")
+    print("PyPDF2 not installed")
     os.system("pip3 install PyPDF2")
     from PyPDF2 import PdfReader, PdfWriter
 
