@@ -2,7 +2,7 @@ import zipfile
 import os
 
 def split_file_into_zips(file_path, chunk_size_mb=25):
-    chunk_size = chunk_size_mb * 1024 * 1024  # Convert to bytes
+    chunk_size = chunk_size_mb * 1024 * 1024
     
     with open(file_path, 'rb') as f:
         part_num = 1
@@ -19,5 +19,4 @@ def split_file_into_zips(file_path, chunk_size_mb=25):
             print(f"Created {zip_name}")
             part_num += 1
 
-# Usage
-split_file_into_zips("Digitalització.key", chunk_size_mb=23)
+split_file_into_zips("./keynote/RA5/RA5.key", chunk_size_mb=21)

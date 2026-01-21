@@ -26,7 +26,6 @@ def extract_and_reassemble(file_pattern, output_file):
     
     print(f"Successfully reassembled to {output_file}")
 
-# Interactive usage
 if __name__ == "__main__":
     pattern = input("Enter file pattern (e.g., 'Digitalització_part*.zip'): ")
     output = input("Enter output filename: ")
