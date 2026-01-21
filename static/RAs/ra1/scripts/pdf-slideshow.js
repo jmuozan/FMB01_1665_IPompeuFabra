@@ -64,20 +64,33 @@ async function renderPDFToCanvas(pdfPath) {
     const viewport = page.getViewport({ scale: 1.0 });
     debugLog('Viewport: ' + viewport.width + 'x' + viewport.height);
 
+    // Get device pixel ratio for sharp rendering on high-DPI screens
+    const pixelRatio = window.devicePixelRatio || 1;
+    debugLog('Device pixel ratio: ' + pixelRatio);
+
     // Calculate scale to fit the container
-    const scale = Math.min(
+    const baseScale = Math.min(
       containerWidth / viewport.width,
       containerHeight / viewport.height
     ) * 0.9; // 90% to add some padding
 
-    debugLog('Scale: ' + scale.toFixed(2));
+    // Apply pixel ratio for sharp rendering
+    const scale = baseScale * pixelRatio;
+
+    debugLog('Base scale: ' + baseScale.toFixed(2) + ', Final scale: ' + scale.toFixed(2));
 
     const scaledViewport = page.getViewport({ scale: scale });
 
+    // Set canvas dimensions at high resolution
     canvas.width = scaledViewport.width;
     canvas.height = scaledViewport.height;
 
-    debugLog('Canvas: ' + canvas.width + 'x' + canvas.height);
+    // Scale canvas back down via CSS for crisp display
+    canvas.style.width = (scaledViewport.width / pixelRatio) + 'px';
+    canvas.style.height = (scaledViewport.height / pixelRatio) + 'px';
+
+    debugLog('Canvas resolution: ' + canvas.width + 'x' + canvas.height);
+    debugLog('Canvas display: ' + canvas.style.width + ' x ' + canvas.style.height);
 
     const context = canvas.getContext('2d');
 
@@ -95,7 +108,7 @@ async function renderPDFToCanvas(pdfPath) {
     // Show canvas
     canvas.style.display = 'block';
 
-    debugLog('✓ PDF rendered successfully!');
+    debugLog('✓ PDF rendered successfully at ' + pixelRatio + 'x resolution!');
   } catch (error) {
     debugLog('ERROR: ' + error.message);
     console.error('Full error:', error);

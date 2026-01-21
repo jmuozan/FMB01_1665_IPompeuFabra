@@ -43,16 +43,27 @@ async function renderPDFToCanvas(pdfPath) {
 
     const viewport = page.getViewport({ scale: 1.0 });
 
+    // Get device pixel ratio for sharp rendering on high-DPI screens
+    const pixelRatio = window.devicePixelRatio || 1;
+
     // Calculate scale to fit the container
-    const scale = Math.min(
+    const baseScale = Math.min(
       containerWidth / viewport.width,
       containerHeight / viewport.height
     ) * 0.9; // 90% to add some padding
 
+    // Apply pixel ratio for sharp rendering
+    const scale = baseScale * pixelRatio;
+
     const scaledViewport = page.getViewport({ scale: scale });
 
+    // Set canvas dimensions at high resolution
     canvas.width = scaledViewport.width;
     canvas.height = scaledViewport.height;
+
+    // Scale canvas back down via CSS for crisp display
+    canvas.style.width = (scaledViewport.width / pixelRatio) + 'px';
+    canvas.style.height = (scaledViewport.height / pixelRatio) + 'px';
 
     const context = canvas.getContext('2d');
 
@@ -70,7 +81,7 @@ async function renderPDFToCanvas(pdfPath) {
     // Show canvas
     canvas.style.display = 'block';
 
-    console.log('PDF rendered to canvas successfully');
+    console.log('PDF rendered to canvas at ' + pixelRatio + 'x resolution');
   } catch (error) {
     console.error('Error rendering PDF to canvas:', error);
     // Fallback to iframe
