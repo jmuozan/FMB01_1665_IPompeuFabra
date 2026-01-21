@@ -124,23 +124,18 @@
   border-radius: 50%;
   cursor: pointer;
   z-index: 1001;
-  transition: all 0.3s ease;
   background-color: transparent;
   -webkit-tap-highlight-color: transparent;
 }
 .navbar__bars svg {
   display: block;
   color: var(--color-grey-dark);
-  transition: all 0.3s ease;
 }
 .navbar__bars:hover {
   background-color: var(--color-grey-light);
 }
 .navbar__bars:hover svg {
   color: var(--color-black);
-}
-.navbar__bars:active {
-  transform: scale(0.92);
 }
 
 /* Desktop: hide hamburger */
@@ -199,7 +194,6 @@
   font-weight: 400;
   font-size: 1.125rem;
   font-family: var(--font-primary);
-  transition: all 0.2s ease;
   width: 100%;
   text-align: center;
   border-bottom: 1px solid var(--color-grey-light);
@@ -211,9 +205,6 @@
 .navbar__menu--links:hover {
   color: var(--color-grey-dark);
   background-color: var(--color-grey-light);
-}
-.navbar__menu--links:active {
-  background-color: rgba(0, 0, 0, 0.15);
 }
 
 /* Desktop: inline links */
