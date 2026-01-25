@@ -19,4 +19,4 @@ def split_file_into_zips(file_path, chunk_size_mb=25):
             print(f"Created {zip_name}")
             part_num += 1
 
-split_file_into_zips("./key/RA5/RA5.key", chunk_size_mb=15)
+split_file_into_zips("./key/RA5/RA5.key", chunk_size_mb=13)
