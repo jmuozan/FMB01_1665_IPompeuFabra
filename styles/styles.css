@@ -1,10 +1,5 @@
-/* ==========================================================================
-   DESIGN SYSTEM - Variables and Tokens
-   Based on master folder approach for consistency
-   ========================================================================== */
-
 :root {
-  /* Colors - Master's minimal palette */
+  /*Colors*/
   --color-base: var(--color-base);
   --color-bg: #fff;
   --color-grey: #939393;
@@ -15,12 +10,12 @@
   --color-white: #fff;
   --color-black: #000;
   
-  /* Typography - Space Grotesk */
+  /*Typography*/
   --font-primary: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-default: 16px;
   --font-line-height: 27px;
   
-  /* Font Sizes - Master's scale */
+  /*Font Size*/
   --font-size-sm: 14px;
   --font-size-base: 16px;
   --font-size-md: 20px;
@@ -29,52 +24,35 @@
   --font-size-2xl: 40px;
   --font-size-3xl: 48px;
   
-  /* Font Weights - Master's minimal approach */
+  /*Font Weights*/
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   
-  /* Spacing Scale */
-  --spacing-xs: 0.25rem;    /* 4px */
-  --spacing-sm: 0.5rem;     /* 8px */
-  --spacing-md: 0.75rem;    /* 12px */
-  --spacing-base: 1rem;     /* 16px */
-  --spacing-lg: 1.5rem;     /* 24px */
-  --spacing-xl: 2rem;       /* 32px */
-  --spacing-2xl: 3rem;      /* 48px */
-  --spacing-3xl: 4rem;      /* 64px */
-  --spacing-4xl: 6rem;      /* 96px */
+  /*Spacing*/
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 0.75rem;
+  --spacing-base: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  --spacing-4xl: 6rem;
   
-  /* Layout - Master's approach */
   --container-max-width: 800px;
   --navbar-height: 60px;
   --padding-base: 27px;
   
-  /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 10px 30px rgba(0, 0, 0, 0.1);
   
-  /* Transitions */
   --transition-fast: 0.2s ease;
   --transition-base: 0.3s ease;
   --transition-slow: 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
-/* ==========================================================================
-   BREAKPOINTS REFERENCE
-   Mobile-first approach:
-   - Base styles: Mobile (< 480px)
-   - Small: 480px+ (large phones)
-   - Medium: 768px+ (tablets)
-   - Large: 1024px+ (desktop)
-   - Wide: 1400px+ (large screens)
-   ========================================================================== */
-
-/* ==========================================================================
-   BASE STYLES
-   ========================================================================== */
 
 .navbar__menu--links, .navbar__menu, .navbar__logo {
   display: flex;
@@ -109,7 +87,6 @@
   align-items: center;
   margin: 0;
 }
-/* Mobile-first: hamburger visible by default */
 .navbar__bars {
   opacity: 1;
   pointer-events: all;
@@ -138,7 +115,6 @@
   color: var(--color-black);
 }
 
-/* Desktop: hide hamburger */
 @media (min-width: 1024px) {
   .navbar__bars {
     opacity: 0;
@@ -146,7 +122,6 @@
   }
 }
 
-/* Mobile-first: menu hidden by default */
 .navbar__menu {
   list-style: none;
   display: none;
@@ -155,7 +130,7 @@
   left: 0;
   width: 100%;
   height: calc(100vh - var(--navbar-height));
-  height: calc(100dvh - var(--navbar-height)); /* Dynamic viewport height for mobile */
+  height: calc(100dvh - var(--navbar-height));
   background: var(--color-bg);
   flex-direction: column;
   justify-content: flex-start;
@@ -170,7 +145,6 @@
   display: flex;
 }
 
-/* Desktop: show menu inline */
 @media (min-width: 1024px) {
   .navbar__menu {
     display: flex;
@@ -186,7 +160,6 @@
   }
 }
 
-/* Mobile-first: larger touch targets */
 .navbar__menu--links {
   color: var(--color-grey);
   text-decoration: none;
@@ -200,14 +173,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px; /* Minimum touch target size */
+  min-height: 48px;
 }
 .navbar__menu--links:hover {
   color: var(--color-grey-dark);
   background-color: var(--color-grey-light);
 }
 
-/* Desktop: inline links */
 @media (min-width: 1024px) {
   .navbar__menu--links {
     padding: 0 15px;
@@ -266,9 +238,9 @@ body {
   color: var(--color-base);
   background-color: var(--color-bg);
   padding-top: var(--navbar-height);
-  padding-bottom: 120px; /* More space for mobile footer */
+  padding-bottom: 120px; 
   min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport for mobile browsers */
+  min-height: 100dvh;
   position: relative;
 }
 
@@ -294,7 +266,6 @@ body {
   padding: var(--spacing-lg) 0;
 }
 
-/* Mobile-first: single column layout */
 .hero__container {
   display: grid;
   grid-template-columns: 1fr;
@@ -316,7 +287,6 @@ body {
   order: 2;
 }
 
-/* Tablet and up: two column layout */
 @media (min-width: 768px) {
   .hero {
     min-height: calc(100vh - var(--navbar-height) - 100px);
@@ -350,7 +320,6 @@ body {
     order: 2;
   }
 }
-/* Mobile-first typography - using clamp for fluid sizing */
 .hero__title {
   font-size: clamp(1.75rem, 5vw + 0.5rem, 2.8rem);
   color: #222121;
@@ -466,7 +435,6 @@ body {
   text-decoration: underline;
 }
 
-/* Mobile-first: stacked footer */
 .footer {
   background-color: var(--color-bg);
   padding: 1.25rem var(--spacing-base);
@@ -558,11 +526,6 @@ body {
   color: var(--color-grey-dark);
 }
 
-/* ==========================================================================
-   CONTENT SECTION
-   ========================================================================== */
-
-/* Mobile-first content padding */
 .content {
   max-width: var(--container-max-width);
   margin: 0 auto;
@@ -582,7 +545,6 @@ body {
   }
 }
 
-/* Mobile-first content headings */
 .content h1 {
   font-size: clamp(var(--font-size-lg), 4vw + 0.5rem, var(--font-size-2xl));
   font-weight: var(--font-weight-semibold);
@@ -668,5 +630,3 @@ body {
   font-size: 0.85em;
   opacity: 0.7;
 }
-
-/*# sourceMappingURL=styles.css.map */
