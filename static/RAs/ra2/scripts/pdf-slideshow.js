@@ -1,9 +1,7 @@
-// Native PDF slideshow with clean design using iframes and PDF.js viewer
 let currentSlide = 0;
 let totalSlides = 126;
 const isMobile = window.innerWidth <= 1023;
 
-// Configure PDF.js worker
 if (typeof pdfjsLib !== 'undefined') {
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 }
@@ -12,8 +10,6 @@ function updateSlideInfo() {
   const slideInfo = document.getElementById('slide-info');
   const percentage = Math.round(((currentSlide + 1) / totalSlides) * 100);
   slideInfo.textContent = `${currentSlide + 1} / ${totalSlides} (${percentage}%)`;
-
-  // Update button states
   document.getElementById('prev-btn').disabled = currentSlide === 0;
   document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
 }
@@ -23,69 +19,42 @@ async function renderPDFToCanvas(pdfPath) {
   const iframe = document.getElementById('pdf-iframe');
   const container = document.querySelector('.pdf-container');
 
-  // Hide iframe first
   iframe.style.display = 'none';
 
   try {
-    // Wait for container to have dimensions
     let attempts = 0;
     while (container.clientWidth === 0 && attempts < 10) {
       await new Promise(resolve => setTimeout(resolve, 100));
       attempts++;
     }
 
-    // Use window dimensions if container dimensions are not available
-    let containerWidth = container.clientWidth || window.innerWidth - 40;
-    let containerHeight = container.clientHeight || window.innerHeight * 0.5;
+    const containerWidth = container.clientWidth || window.innerWidth - 40;
+    const containerHeight = container.clientHeight || window.innerHeight * 0.5;
 
-    const loadingTask = pdfjsLib.getDocument(pdfPath);
-    const pdf = await loadingTask.promise;
+    const pdf = await pdfjsLib.getDocument(pdfPath).promise;
     const page = await pdf.getPage(1);
-
     const viewport = page.getViewport({ scale: 1.0 });
-
-    // Get device pixel ratio for sharp rendering on high-DPI screens
     const pixelRatio = window.devicePixelRatio || 1;
 
-    // Calculate scale to fit the container
     const baseScale = Math.min(
       containerWidth / viewport.width,
       containerHeight / viewport.height
-    ) * 0.9; // 90% to add some padding
+    ) * 0.9;
 
-    // Apply pixel ratio for sharp rendering
-    const scale = baseScale * pixelRatio;
+    const scaledViewport = page.getViewport({ scale: baseScale * pixelRatio });
 
-    const scaledViewport = page.getViewport({ scale: scale });
-
-    // Set canvas dimensions at high resolution
     canvas.width = scaledViewport.width;
     canvas.height = scaledViewport.height;
-
-    // Scale canvas back down via CSS for crisp display
     canvas.style.width = (scaledViewport.width / pixelRatio) + 'px';
     canvas.style.height = (scaledViewport.height / pixelRatio) + 'px';
 
     const context = canvas.getContext('2d');
-
-    // Fill with white background
     context.fillStyle = 'white';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    const renderContext = {
-      canvasContext: context,
-      viewport: scaledViewport
-    };
-
-    await page.render(renderContext).promise;
-
-    // Show canvas
+    await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
     canvas.style.display = 'block';
-
-    console.log('PDF rendered to canvas at ' + pixelRatio + 'x resolution');
   } catch (error) {
-    console.error('Error rendering PDF to canvas:', error);
-    // Fallback to iframe
     canvas.style.display = 'none';
     iframe.style.display = 'block';
     iframe.src = pdfPath;
@@ -95,21 +64,17 @@ async function renderPDFToCanvas(pdfPath) {
 function loadSlide(slideIndex) {
   if (slideIndex < 0 || slideIndex >= totalSlides) return;
 
-  // Format slide number with leading zeros
   const slideNumber = String(slideIndex + 1).padStart(3, '0');
   const pdfPath = `./slides/slide_${slideNumber}.pdf`;
 
-  // Update current slide
   currentSlide = slideIndex;
   updateSlideInfo();
 
   if (isMobile && typeof pdfjsLib !== 'undefined') {
-    // Use canvas rendering for mobile
     renderPDFToCanvas(pdfPath);
   } else {
-    // Use iframe for desktop
     showLoading();
-    const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=page-fit&pagemode=none&page=1&nameddest=&rotation=0`;
+    const pdfUrl = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=Fit&zoom=page-fit&pagemode=none&page=1`;
     const pdfIframe = document.getElementById('pdf-iframe');
     const canvas = document.getElementById('pdf-canvas');
 
@@ -117,22 +82,16 @@ function loadSlide(slideIndex) {
     pdfIframe.style.display = 'block';
     pdfIframe.src = pdfUrl;
   }
-
-  console.log(`Loading slide ${slideIndex + 1}: ${pdfPath}`);
 }
 
 function showLoading() {
   const loadingDiv = document.getElementById('loading-indicator');
-  if (loadingDiv) {
-    loadingDiv.style.display = 'block';
-  }
+  if (loadingDiv) loadingDiv.style.display = 'block';
 }
 
 function hideLoading() {
   const loadingDiv = document.getElementById('loading-indicator');
-  if (loadingDiv) {
-    loadingDiv.style.display = 'none';
-  }
+  if (loadingDiv) loadingDiv.style.display = 'none';
 }
 
 function changeSlide(direction) {
@@ -142,59 +101,13 @@ function changeSlide(direction) {
   }
 }
 
-// Keyboard navigation
 document.addEventListener('keydown', (e) => {
-  switch(e.key) {
-    case 'ArrowLeft':
-      changeSlide(-1);
-      break;
-    case 'ArrowRight':
-      changeSlide(1);
-      break;
-  }
+  if (e.key === 'ArrowLeft') changeSlide(-1);
+  if (e.key === 'ArrowRight') changeSlide(1);
 });
 
-// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Native clean PDF slideshow loading...');
   updateSlideInfo();
-
-  // Add event listener for iframe load
-  const pdfIframe = document.getElementById('pdf-iframe');
-
-  pdfIframe.addEventListener('load', () => {
-    hideLoading();
-    console.log('PDF iframe loaded successfully');
-
-    // Try to modify PDF viewer layout after load
-    setTimeout(() => {
-      try {
-        const iframeDoc = pdfIframe.contentDocument || pdfIframe.contentWindow.document;
-        const toolbar = iframeDoc.querySelector('#toolbar');
-        const secondaryToolbar = iframeDoc.querySelector('#secondaryToolbar');
-        const sidebarContainer = iframeDoc.querySelector('#sidebarContainer');
-        const viewerContainer = iframeDoc.querySelector('#viewerContainer');
-
-        if (toolbar) toolbar.style.display = 'none';
-        if (secondaryToolbar) secondaryToolbar.style.display = 'none';
-        if (sidebarContainer) sidebarContainer.style.display = 'none';
-
-        // Force horizontal layout for viewerContainer
-        if (viewerContainer) {
-          viewerContainer.style.writingMode = 'horizontal-tb';
-          viewerContainer.style.direction = 'ltr';
-          viewerContainer.style.overflowX = 'auto';
-          viewerContainer.style.overflowY = 'hidden';
-          viewerContainer.style.whiteSpace = 'nowrap';
-          console.log('Applied horizontal layout to viewerContainer');
-        }
-      } catch (e) {
-        // Cross-origin restrictions, URL parameters should handle it
-        console.log('Using URL parameters for layout control:', e.message);
-      }
-    }, 1000);
-  });
-
-  // Load first slide
+  document.getElementById('pdf-iframe').addEventListener('load', hideLoading);
   loadSlide(0);
 });
