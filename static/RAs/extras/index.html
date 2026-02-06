@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+      integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../../../styles/styles.css" />
+    <title>Extras</title>
+    <style>
+      .extras-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 27px;
+        min-height: calc(100vh - 140px);
+      }
+
+      .extras-title {
+        font-size: 2rem;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.65);
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+      }
+
+      /* Tabs Navigation */
+      .tabs-nav {
+        display: flex;
+        gap: 0;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .tab-button {
+        background: none;
+        border: none;
+        padding: 0.75rem 1rem;
+        font-size: 14px;
+        font-weight: 400;
+        color: #939393;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-bottom: 2px solid transparent;
+        font-family: inherit;
+      }
+
+      .tab-button:hover {
+        color: rgba(0, 0, 0, 0.65);
+      }
+
+      .tab-button.active {
+        color: #0366d6;
+        border-bottom-color: #0366d6;
+      }
+
+      /* Tab Content */
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .demo-card {
+        margin-bottom: 2rem;
+      }
+
+      .demo-card h2 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.65);
+        margin-bottom: 1rem;
+      }
+
+      .demo-card p {
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.65);
+        line-height: 27px;
+        margin-bottom: 1rem;
+      }
+
+      .btn-primary {
+        display: inline-block;
+        padding: 8px 16px;
+        background: transparent;
+        color: #0366d6;
+        text-decoration: none;
+        border: 1px solid #0366d6;
+        border-radius: 3px;
+        transition: all 0.2s ease;
+        font-weight: 400;
+        font-size: 14px;
+      }
+
+      .btn-primary:hover {
+        background: #0366d6;
+        color: white;
+      }
+
+      /* Responsive */
+      @media (max-width: 1023px) {
+        .extras-content {
+          padding: 0 20px;
+        }
+
+        .tabs-nav {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-button {
+          white-space: nowrap;
+          padding: 0.75rem 0.75rem;
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="../../../index.html" class="navbar__logo">FMB0_1665</a>
+      <div class="navbar__bars">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="navbar__menu">
+        <a href="../ra1/ra1.html" class="navbar__menu--links">RA1</a>
+        <a href="../ra2/ra2.html" class="navbar__menu--links">RA2</a>
+        <a href="../ra3/ra3.html" class="navbar__menu--links">RA3</a>
+        <a href="../ra4/ra4.html" class="navbar__menu--links">RA4</a>
+        <a href="../ra5/ra5.html" class="navbar__menu--links">RA5</a>
+        <a href="../ra6/ra6.html" class="navbar__menu--links">RA6</a>
+        <a href="./index.html" class="navbar__menu--links">Continguts</a>
+        <a href="../../estudiants.html" class="navbar__menu--links">Estudiants</a>
+        <a href="../../info.html" class="navbar__menu--links">Info</a>
+      </div>
+    </nav>
+
+    <div class="extras-content">
+      <h1 class="extras-title">Casos pràctics d'IA</h1>
+
+      <!-- Tabs Navigation -->
+      <div class="tabs-nav">
+        <button class="tab-button active" data-tab="mediapipe">MediaPipe</button>
+        <button class="tab-button" data-tab="object-detection">Objectes</button>
+        <button class="tab-button" data-tab="text-generation">Text</button>
+        <button class="tab-button" data-tab="image-classification">Imatges</button>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="mediapipe" class="tab-content active">
+        <div class="demo-card">
+          <h2>MediaPipe Camera</h2>
+          <p>Detecció de poses, mans i cares en temps real amb gravació de vídeo.</p>
+          <a href="./mediapipe-camera.html" class="btn-primary">Proba-ho →</a>
+        </div>
+      </div>
+
+      <div id="object-detection" class="tab-content">
+        <div class="demo-card">
+          <h2>Detecció d'Objectes</h2>
+          <p>Pròximament</p>
+        </div>
+      </div>
+
+      <div id="text-generation" class="tab-content">
+        <div class="demo-card">
+          <h2>Generació de Text</h2>
+          <p>Pròximament</p>
+        </div>
+      </div>
+
+      <div id="image-classification" class="tab-content">
+        <div class="demo-card">
+          <h2>Classificació d'Imatges</h2>
+          <p>Pròximament</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer__container">
+        <div class="footer__left">
+          <p class="footer__copyright">
+            © 2025 Jorge Muñoz Zanón. Tot el contingut d'esta pàgina està llicenciat sota
+            <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">Llicència MIT</a>
+            tret que s'indique el contrari.
+          </p>
+        </div>
+        <div class="footer__right">
+          <div class="footer__social">
+            <a href="https://github.com/jmuozan/FMB01_1665_IPompeuFabra" target="_blank" rel="noopener noreferrer" class="footer__social--link">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/jorgemunozzanon/" target="_blank" rel="noopener noreferrer" class="footer__social--link">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tab functionality
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab');
+
+          // Remove active class from all buttons and contents
+          document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+          // Add active class to clicked button and corresponding content
+          button.classList.add('active');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+    </script>
+    <script src="../../../js/menu.js"></script>
+  </body>
+</html>
