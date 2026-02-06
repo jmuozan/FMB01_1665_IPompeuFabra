@@ -1,0 +1,46 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+static/RAs/ra1/RA1/RA1.pdf
+static/RAs/ra2/RA2/RA2.pdf
+static/RAs/ra3/RA3/RA3.pdf
+static/RAs/ra4/RA4/RA4.pdf
+static/RAs/ra5/RA5/RA5.pdf
+static/RAs/ra6/RA6/RA6.pdf
+
+
+
+Presentacions/Digitalització.key
+
+# Keynote files
+presentacions/keynote/RA1/RA1.key
+presentacions/keynote/RA2/RA2.key
+presentacions/keynote/RA3/RA3.key
+presentacions/keynote/RA4/RA4.key
+presentacions/keynote/RA5/RA5.key
+presentacions/keynote/RA6/RA6.key
+
+# Large pdf files
+presentacions/pdf/RA1/RA1.pdf
+presentacions/pdf/RA2/RA2.pdf
+presentacions/pdf/RA3/RA3.pdf
+presentacions/pdf/RA4/RA4.pdf
+presentacions/pdf/RA5/RA5.pdf
+presentacions/pdf/RA6/RA6.pdf
+
+# Power Point files
+presentacions/ppt/RA1/RA1.pptx
+presentacions/ppt/RA2/RA2.pptx
+presentacions/ppt/RA3/RA3.pptx
+presentacions/ppt/RA4/RA4.pptx
+presentacions/ppt/RA5/RA5.pptx
+presentacions/ppt/RA6/RA6.pptx
+
+
