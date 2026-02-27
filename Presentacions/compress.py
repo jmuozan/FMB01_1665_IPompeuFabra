@@ -19,4 +19,4 @@ def split_file_into_zips(file_path, chunk_size_mb=25):
             print(f"Created {zip_name}")
             part_num += 1
 
-split_file_into_zips("./pdf/RA3/RA3.pdf", chunk_size_mb=13)
+split_file_into_zips("./ppt/RA4/RA4.pptx", chunk_size_mb=13)
