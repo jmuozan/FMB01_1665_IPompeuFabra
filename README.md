@@ -3,3 +3,4 @@ Web de recursos per l'assignatura Digitalització aplicada als sectors productiu
 Esta web està sota una [llicència MIT](./LICENSE). Per qualsevol dubte t'invite a contactar amb mi o bé per [correu](jmuozan@gmail.com) o bé per [LinkedIn](www.linkedin.com/in/jorgemunozzanon)
 
 
+Tots els arxius de presentació són disponibles en aqiest repositori en diversos formats: ```.pdf``` (tant compresses com sense comprimir), ```.key``` i ```.pptx``` a la carpeta ```presentations```. 
