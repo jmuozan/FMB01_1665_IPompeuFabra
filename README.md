@@ -6,11 +6,21 @@ Esta web està sota una [llicència MIT](./LICENSE). Per qualsevol dubte t'invit
 Tots els arxius de presentació són disponibles en aqiest repositori en diversos formats: ```.pdf``` (tant compresses com sense comprimir), ```.key``` i ```.pptx``` a la carpeta ```presentations```. Per accedir tant a les presentacions per RA com a la completa en qualsevol del formats (excepte el ```.pdf``` comprés), cal tindre instal·lat python. A continuació cal seguir les següents passes:
 
 #### 1. Clonar el repositori
+
 Obrir el terminal de l'ordinador i una vegada situat a la carpeta que desitges teclejar el següent (important tindre [git](git-scm.com) instal·lat)
 
 ```
 git clone https://github.com/jmuozan/FMB01_1665_IPompeuFabra.git
 ```
 
+també és possible dirigir-se al [següent web](https://github.com/jmuozan/FMB01_1665_IPompeuFabra) i dins del desplegable ```Code``` fer click al botó ```Download ZIP```
+
+![](./imgs/documentation/step_1.png)
+
+![](./imgs/documentation/step_2.png)
+
+
 #### 2. Obrir la carpeta que correspon
+
+
 
