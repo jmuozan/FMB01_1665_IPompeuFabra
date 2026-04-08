@@ -30,7 +30,7 @@ A la terminal fer:
 cd FMB01_1665_IPompeuFabra/presentations
 ```
 
-3. Estrucutra del repositori
+## 3. Estrucutra del repositori
 
 L'estructura del repositori és la següent:
 
@@ -71,7 +71,7 @@ Dins de cada subcarpeta hi ha una nova jerarquia de carpetes, ```FULL``` per la 
 
 En cas de voler accedir a pdfs de major qualitat o a altre tipus d'arxius editables, com els ja mencionats anteriorment, cal fer un pas posterior. 
 
-4. Set up python
+## 4. Set up python
 
 Si obriu qualsevol de les carpetes que no siga ```compressed```, vos adonareu de que aquestes contenen un munt d'arxius ```.zip``` (compressos) dividits en parts. La totalitat d'aquests representa cada presentació. Per accedir-hi, no les intenteu descomprimir amb els programes tradicionals, ja que, probablement no funcionarà. 
 
