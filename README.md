@@ -142,3 +142,14 @@ Una vegada fet veureu un arxiu generat, però sense extensió:
 
 ![](./imgs/documentation/step_6.png)
 
+Per solventar-ho, caldra, en aquest cas, executar el següent comandament:
+
+```
+mv ./key/RA2/RA2 ./key/RA2/RA2.key
+```
+
+Tingueu en compte, però, que caldra canviar les rutes ```./key/RA2/RA2``` i ```./key/RA2/RA2.key``` depenent de quin arxiu esteu descomprimint, per possar-ne un altre exemple, si volguera fer el mateix per la presentació de tot el mòdul complet en format power point, utilitzaria aquest comandament:
+
+```
+mv ./ppt/FULL/1665_FMB01 ././ppt/FULL/1665_FMB01.pptx
+```
