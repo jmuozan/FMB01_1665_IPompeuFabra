@@ -9,7 +9,7 @@ Tots els arxius de presentació són disponibles en aquest repositori en diverso
 
 ## 1. Clonar el repositori
 
-Obrir el terminal de l'ordinador i una vegada situat a la carpeta que desitges teclejar el següent (important tindre [git](git-scm.com) instal·lat)
+Obrir el terminal de l'ordinador i una vegada situat a la carpeta que desitges teclejar el següent (és important tindre [git](git-scm.com) instal·lat)
 
 ```
 git clone https://github.com/jmuozan/FMB01_1665_IPompeuFabra.git
@@ -65,7 +65,7 @@ FMB01_1665_IPompeuFabra/
 └── README.md
 ```
 
-cada nom de subcarpeta a la carpeta ```presentations``` representa el tipus d'arxius dins ```pdf``` ```key``` (per keynote) i ```ppt``` (per arcius powerpoint). ```compress.py``` i ```uncompress.py``` són les utilitats que es faran servir per la descompressió. 
+cada nom de subcarpeta a la carpeta ```presentations``` representa el tipus d'arxius dins ```pdf``` ```key``` (per keynote) i ```ppt``` (per arxius powerpoint). ```compress.py``` i ```uncompress.py``` són les utilitats que es faran servir per la descompressió. 
 
 Dins de cada subcarpeta hi ha una nova jerarquia de carpetes, ```FULL``` per la presentació completa del mòdul o ```RA1```, ```RA2```, ```RA3```, ```RA4```, ```RA5``` i ```RA6``` per les presentacions (en el format que pertoque) de cada Resultat d'Aprenentatge. La carpeta ```pdf``` té un altra subcarpeta anomenada ```compressed```, aquesta té les presentacions de tot el mòdul i de cada RA com a pdf de baixa qualitat. Per fer ús d'aquestes, només cal obrir-les i prou, no hi ha cap altre procés.
 
