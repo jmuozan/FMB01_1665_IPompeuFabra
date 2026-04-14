@@ -69,7 +69,7 @@ cada nom de subcarpeta a la carpeta ```presentations``` representa el tipus d'ar
 
 Dins de cada subcarpeta hi ha una nova jerarquia de carpetes, ```FULL``` per la presentació completa del mòdul o ```RA1```, ```RA2```, ```RA3```, ```RA4```, ```RA5``` i ```RA6``` per les presentacions (en el format que pertoque) de cada Resultat d'Aprenentatge. La carpeta ```pdf``` té un altra subcarpeta anomenada ```compressed```, aquesta té les presentacions de tot el mòdul i de cada RA com a pdf de baixa qualitat. Per fer ús d'aquestes, només cal obrir-les i prou, no hi ha cap altre procés.
 
-En cas de voler accedir a pdfs de major qualitat o a altre tipus d'arxius editables, com els ja mencionats anteriorment, cal fer un pas posterior. 
+En cas de que vulgueu accedir a pdfs de major qualitat o a altre tipus d'arxius editables, com els ja mencionats anteriorment, cal fer un pas posterior. 
 
 ## 4. Set up python
 
