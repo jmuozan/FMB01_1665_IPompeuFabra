@@ -151,7 +151,7 @@ mv ./key/RA2/RA2 ./key/RA2/RA2.key
 ![](./imgs/documentation/step_7.png)
 ![](./imgs/documentation/step_8.png)
 
-Tingueu en compte, però, que caldra canviar les rutes ```./key/RA2/RA2``` i ```./key/RA2/RA2.key``` depenent de quin arxiu esteu descomprimint, per possar-ne un altre exemple, si volguera fer el mateix per la presentació de tot el mòdul complet en format power point, utilitzaria aquest comandament:
+Cal que tingueu en compte, però, que caldra canviar les rutes ```./key/RA2/RA2``` i ```./key/RA2/RA2.key``` depenent de quin arxiu esteu descomprimint, per possar-ne un altre exemple, si volguera fer el mateix per la presentació de tot el mòdul complet en format power point, utilitzaria aquest comandament:
 
 ```
 mv ./ppt/FULL/1665_FMB01 ././ppt/FULL/1665_FMB01.pptx
