@@ -55,6 +55,35 @@
           </div>
         </div>
       </div>
+
+      <a class="ra-scroll-cue" href="#practiquem" aria-label="Anar a l'activitat pràctica">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </a>
+
+      <section class="idevice-diy" id="practiquem" aria-label="iDevice DIY">
+        <div class="idevice-diy__header">
+          <div class="idevice-diy__heading">
+            <span class="idevice-diy__label">Practiquem</span>
+            <h2 class="idevice-diy__title">Identifica les dades sensibles</h2>
+          </div>
+        </div>
+        <div class="idevice-diy__body">
+          <p class="idevice-diy__instructions">Marca només les dades que es consideren categories especials de dades personals (dades sensibles) segons el RGPD i comprova la teua selecció.</p>
+
+          <div class="diy-checklist" data-diy-correct="d1,d3,d4,d6">
+            <ul class="diy-checklist__items">
+              <li><label><input type="checkbox" value="d1"> L'afiliació sindical d'un treballador</label></li>
+              <li><label><input type="checkbox" value="d2"> El nombre total de visites setmanals a una botiga en línia (sense identificar usuaris)</label></li>
+              <li><label><input type="checkbox" value="d3"> L'estat de salut d'un pacient en un historial mèdic</label></li>
+              <li><label><input type="checkbox" value="d4"> Les creences religioses indicades en un formulari d'inscripció</label></li>
+              <li><label><input type="checkbox" value="d5"> El nom d'una empresa que apareix en un directori públic</label></li>
+              <li><label><input type="checkbox" value="d6"> L'orientació sexual indicada voluntàriament en un perfil</label></li>
+            </ul>
+            <button class="diy-check-btn">Comprova la selecció</button>
+            <p class="diy-feedback" hidden></p>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="footer">
@@ -81,5 +110,6 @@
 
     <script src="./scripts/pdf-slideshow.js"></script>
     <script src="../../../js/menu.js"></script>
+    <script src="../../../js/idevice-diy.js"></script>
   </body>
 </html>

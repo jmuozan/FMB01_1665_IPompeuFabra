@@ -55,6 +55,43 @@
           </div>
         </div>
       </div>
+
+      <a class="ra-scroll-cue" href="#practiquem" aria-label="Anar a l'activitat pràctica">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </a>
+
+      <section class="idevice-diy" id="practiquem" aria-label="iDevice DIY">
+        <div class="idevice-diy__header">
+          <div class="idevice-diy__heading">
+            <span class="idevice-diy__label">Practiquem</span>
+            <h2 class="idevice-diy__title">Construeix el teu canvas de projecte</h2>
+          </div>
+        </div>
+        <div class="idevice-diy__body">
+          <p class="idevice-diy__instructions">Omple els quatre camps amb una idea de transformació digital (pot ser real o inventada) i genera el resum del teu projecte.</p>
+
+          <div class="diy-canvas">
+            <div class="diy-canvas__field">
+              <label for="ra6-problema">Quin problema o repte vols resoldre?</label>
+              <input id="ra6-problema" type="text" data-diy-field="problema" placeholder="Ex: Perdem hores gestionant comandes en paper">
+            </div>
+            <div class="diy-canvas__field">
+              <label for="ra6-solucio">Quina solució digital proposes?</label>
+              <input id="ra6-solucio" type="text" data-diy-field="solucio" placeholder="Ex: Una app de gestió de comandes al núvol">
+            </div>
+            <div class="diy-canvas__field">
+              <label for="ra6-tecnologia">Quina tecnologia habilitadora hi utilitzaries?</label>
+              <input id="ra6-tecnologia" type="text" data-diy-field="tecnologia" placeholder="Ex: Cloud computing i IoT">
+            </div>
+            <div class="diy-canvas__field">
+              <label for="ra6-indicador">Com mesuraràs l'èxit del projecte?</label>
+              <input id="ra6-indicador" type="text" data-diy-field="indicador" placeholder="Ex: Reduir un 30% el temps de gestió de comandes">
+            </div>
+            <button class="diy-generate-btn" data-diy-summary-target="#ra6-summary" data-diy-template="El projecte planteja resoldre el problema de {problema}, mitjançant {solucio}, aplicant {tecnologia} com a tecnologia habilitadora. L'èxit es mesurarà a través de: {indicador}.">Genera el resum del projecte</button>
+            <div id="ra6-summary" class="diy-summary" hidden></div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="footer">
@@ -81,5 +118,6 @@
 
     <script src="./scripts/pdf-slideshow.js"></script>
     <script src="../../../js/menu.js"></script>
+    <script src="../../../js/idevice-diy.js"></script>
   </body>
 </html>

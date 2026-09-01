@@ -56,6 +56,64 @@
           </div>
         </div>
       </div>
+
+      <a class="ra-scroll-cue" href="#practiquem" aria-label="Anar a l'activitat pràctica">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </a>
+
+      <section class="idevice-diy" id="practiquem" aria-label="iDevice DIY">
+        <div class="idevice-diy__header">
+          <div class="idevice-diy__heading">
+            <span class="idevice-diy__label">Practiquem</span>
+            <h2 class="idevice-diy__title">Núvol públic, privat o híbrid?</h2>
+          </div>
+        </div>
+        <div class="idevice-diy__body">
+          <p class="idevice-diy__instructions">Per a cada cas, selecciona quin model de núvol s'ajusta millor a la necessitat descrita i comprova la teua resposta.</p>
+
+          <div class="diy-select-item" data-diy-correct="public" data-diy-feedback-correct="Correcte! El núvol públic ofereix un cost inicial baix i escalabilitat immediata." data-diy-feedback-incorrect="No és correcte. Torna-hi a pensar: cal un cost inicial baix i poder escalar ràpidament.">
+            <p class="diy-select-item__prompt">1. Una startup necessita allotjar la seua web amb el mínim cost inicial i poder escalar ràpidament si creix.</p>
+            <div class="diy-select-row">
+              <select class="diy-select">
+                <option value="">Selecciona...</option>
+                <option value="public">Núvol públic</option>
+                <option value="privat">Núvol privat</option>
+                <option value="hibrid">Núvol híbrid</option>
+              </select>
+              <button class="diy-check-btn">Comprova</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+
+          <div class="diy-select-item" data-diy-correct="privat" data-diy-feedback-correct="Correcte! El núvol privat dona control total de la infraestructura, clau per a dades tan sensibles." data-diy-feedback-incorrect="No és correcte. Cal control total de la infraestructura i complir normatives estrictes de privacitat.">
+            <p class="diy-select-item__prompt">2. Un hospital ha de guardar historials mèdics de pacients complint normatives estrictes de privacitat i mantenint el control total de la infraestructura.</p>
+            <div class="diy-select-row">
+              <select class="diy-select">
+                <option value="">Selecciona...</option>
+                <option value="public">Núvol públic</option>
+                <option value="privat">Núvol privat</option>
+                <option value="hibrid">Núvol híbrid</option>
+              </select>
+              <button class="diy-check-btn">Comprova</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+
+          <div class="diy-select-item" data-diy-correct="hibrid" data-diy-feedback-correct="Correcte! El núvol híbrid combina servidors propis per a dades sensibles amb núvol públic per als pics de demanda." data-diy-feedback-incorrect="No és correcte. Cal combinar servidors propis amb capacitat pública per a absorbir els pics de demanda.">
+            <p class="diy-select-item__prompt">3. Una empresa vol mantenir les dades sensibles dels clients en servidors propis, però utilitzar serveis públics del núvol per a absorbir els pics de demanda de campanyes com el Black Friday.</p>
+            <div class="diy-select-row">
+              <select class="diy-select">
+                <option value="">Selecciona...</option>
+                <option value="public">Núvol públic</option>
+                <option value="privat">Núvol privat</option>
+                <option value="hibrid">Núvol híbrid</option>
+              </select>
+              <button class="diy-check-btn">Comprova</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="footer">
@@ -82,5 +140,6 @@
 
     <script src="./scripts/pdf-slideshow.js"></script>
     <script src="../../../js/menu.js"></script>
+    <script src="../../../js/idevice-diy.js"></script>
   </body>
 </html>

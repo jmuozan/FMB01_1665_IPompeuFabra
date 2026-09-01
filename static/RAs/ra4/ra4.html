@@ -55,6 +55,66 @@
           </div>
         </div>
       </div>
+
+      <a class="ra-scroll-cue" href="#practiquem" aria-label="Anar a l'activitat pràctica">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </a>
+
+      <section class="idevice-diy" id="practiquem" aria-label="iDevice DIY">
+        <div class="idevice-diy__header">
+          <div class="idevice-diy__heading">
+            <span class="idevice-diy__label">Practiquem</span>
+            <h2 class="idevice-diy__title">Classifica el risc segons el Reglament Europeu d'IA</h2>
+          </div>
+        </div>
+        <div class="idevice-diy__body">
+          <p class="idevice-diy__instructions">El Reglament Europeu d'IA classifica els sistemes segons el seu nivell de risc. Per a cada exemple, indica quin nivell de risc li correspon.</p>
+
+          <div class="diy-choice-item" data-diy-correct="inacceptable" data-diy-feedback-correct="Correcte! Els sistemes de puntuació social estan prohibits per suposar un risc inacceptable." data-diy-feedback-incorrect="No és correcte. Un sistema que puntua i classifica la ciutadania per part d'un govern és risc inacceptable.">
+            <p class="diy-choice-item__prompt">1. Sistema de puntuació social de la ciutadania per part d'un govern.</p>
+            <div class="diy-choices">
+              <button class="diy-choice" data-value="inacceptable">Risc inacceptable</button>
+              <button class="diy-choice" data-value="alt">Risc alt</button>
+              <button class="diy-choice" data-value="limitat">Risc limitat</button>
+              <button class="diy-choice" data-value="minim">Risc mínim</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+
+          <div class="diy-choice-item" data-diy-correct="alt" data-diy-feedback-correct="Correcte! Aquest sistema pot afectar l'accés a un lloc de treball, per això és risc alt." data-diy-feedback-incorrect="No és correcte. Pot afectar drets fonamentals com l'accés a l'ocupació: és risc alt.">
+            <p class="diy-choice-item__prompt">2. Programari que selecciona automàticament els currículums en un procés de selecció laboral.</p>
+            <div class="diy-choices">
+              <button class="diy-choice" data-value="inacceptable">Risc inacceptable</button>
+              <button class="diy-choice" data-value="alt">Risc alt</button>
+              <button class="diy-choice" data-value="limitat">Risc limitat</button>
+              <button class="diy-choice" data-value="minim">Risc mínim</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+
+          <div class="diy-choice-item" data-diy-correct="limitat" data-diy-feedback-correct="Correcte! Un chatbot té risc limitat: només cal informar l'usuari que parla amb una IA." data-diy-feedback-incorrect="No és correcte. Ací només cal transparència (informar que és una IA): és risc limitat.">
+            <p class="diy-choice-item__prompt">3. Chatbot d'atenció al client d'una botiga en línia.</p>
+            <div class="diy-choices">
+              <button class="diy-choice" data-value="inacceptable">Risc inacceptable</button>
+              <button class="diy-choice" data-value="alt">Risc alt</button>
+              <button class="diy-choice" data-value="limitat">Risc limitat</button>
+              <button class="diy-choice" data-value="minim">Risc mínim</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+
+          <div class="diy-choice-item" data-diy-correct="minim" data-diy-feedback-correct="Correcte! Un filtre anti-spam és un ús quotidià i de baix impacte, amb risc mínim." data-diy-feedback-incorrect="No és correcte. Aquest ús quotidià i de baix impacte és risc mínim.">
+            <p class="diy-choice-item__prompt">4. Filtre anti-spam del correu electrònic.</p>
+            <div class="diy-choices">
+              <button class="diy-choice" data-value="inacceptable">Risc inacceptable</button>
+              <button class="diy-choice" data-value="alt">Risc alt</button>
+              <button class="diy-choice" data-value="limitat">Risc limitat</button>
+              <button class="diy-choice" data-value="minim">Risc mínim</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="footer">
@@ -81,5 +141,6 @@
 
     <script src="./scripts/pdf-slideshow.js"></script>
     <script src="../../../js/menu.js"></script>
+    <script src="../../../js/idevice-diy.js"></script>
   </body>
 </html>

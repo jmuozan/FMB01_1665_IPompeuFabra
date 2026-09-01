@@ -56,6 +56,62 @@
           </div>
         </div>
       </div>
+
+      <a class="ra-scroll-cue" href="#practiquem" aria-label="Anar a l'activitat pràctica">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </a>
+
+      <section class="idevice-diy" id="practiquem" aria-label="iDevice DIY">
+        <div class="idevice-diy__header">
+          <div class="idevice-diy__heading">
+            <span class="idevice-diy__label">Practiquem</span>
+            <h2 class="idevice-diy__title">Tria la tecnologia adequada</h2>
+          </div>
+        </div>
+        <div class="idevice-diy__body">
+          <p class="idevice-diy__instructions">Per a cada situació, selecciona la tecnologia habilitadora digital que hi encaixa millor.</p>
+
+          <div class="diy-choice-item" data-diy-correct="iot" data-diy-feedback-correct="Correcte! L'IoT connecta sensors a màquines i n'envia les dades en temps real." data-diy-feedback-incorrect="No és la millor opció. Pensa en sensors connectats que envien dades en temps real: això és l'IoT.">
+            <p class="diy-choice-item__prompt">1. Una fàbrica vol conéixer en temps real la temperatura i la vibració de 200 màquines i rebre una alerta si alguna falla.</p>
+            <div class="diy-choices">
+              <button class="diy-choice" data-value="iot">Internet de les coses (IoT)</button>
+              <button class="diy-choice" data-value="blockchain">Blockchain</button>
+              <button class="diy-choice" data-value="bigdata">Big Data</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+
+          <div class="diy-choice-item" data-diy-correct="ar" data-diy-feedback-correct="Correcte! La realitat augmentada superposa informació digital sobre l'entorn real." data-diy-feedback-incorrect="No és la millor opció. Pensa en instruccions superposades sobre l'objecte real: això és la realitat augmentada.">
+            <p class="diy-choice-item__prompt">2. Un operari ha d'aprendre a muntar una peça complexa i necessita veure instruccions superposades sobre la peça real mentre hi treballa.</p>
+            <div class="diy-choices">
+              <button class="diy-choice" data-value="bigdata">Big Data</button>
+              <button class="diy-choice" data-value="ar">Realitat augmentada</button>
+              <button class="diy-choice" data-value="cobots">Robòtica col·laborativa</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+
+          <div class="diy-choice-item" data-diy-correct="bigdata" data-diy-feedback-correct="Correcte! Trobar patrons en grans volums de dades històriques és Big Data." data-diy-feedback-incorrect="No és la millor opció. Pensa en l'anàlisi de grans volums de dades històriques: això és Big Data.">
+            <p class="diy-choice-item__prompt">3. Una empresa té milions de dades de vendes dels últims 5 anys i vol trobar-hi patrons de consum per a prendre decisions.</p>
+            <div class="diy-choices">
+              <button class="diy-choice" data-value="iot">Internet de les coses (IoT)</button>
+              <button class="diy-choice" data-value="bigdata">Big Data</button>
+              <button class="diy-choice" data-value="impressio3d">Impressió 3D</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+
+          <div class="diy-choice-item" data-diy-correct="cobots" data-diy-feedback-correct="Correcte! Els cobots (robots col·laboratius) estan dissenyats per a treballar de manera segura al costat de persones." data-diy-feedback-incorrect="No és la millor opció. Pensa en un robot dissenyat per a treballar de manera segura al costat de persones: és un cobot.">
+            <p class="diy-choice-item__prompt">4. Es necessita un braç robòtic que treballe de manera segura al costat de persones en la mateixa línia de muntatge.</p>
+            <div class="diy-choices">
+              <button class="diy-choice" data-value="cobots">Robòtica col·laborativa</button>
+              <button class="diy-choice" data-value="blockchain">Blockchain</button>
+              <button class="diy-choice" data-value="cloud">Cloud computing</button>
+            </div>
+            <p class="diy-feedback" hidden></p>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="footer">
@@ -82,5 +138,6 @@
 
     <script src="./scripts/pdf-slideshow.js"></script>
     <script src="../../../js/menu.js"></script>
+    <script src="../../../js/idevice-diy.js"></script>
   </body>
 </html>

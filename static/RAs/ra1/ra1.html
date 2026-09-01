@@ -57,6 +57,29 @@
           </div>
         </div>
       </div>
+
+      <a class="ra-scroll-cue" href="#practiquem" aria-label="Anar a l'activitat pràctica">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </a>
+
+      <section class="idevice-diy" id="practiquem" aria-label="iDevice DIY">
+        <div class="idevice-diy__header">
+          <div class="idevice-diy__heading">
+            <span class="idevice-diy__label">Practiquem</span>
+            <h2 class="idevice-diy__title">Digitalitza un procés analògic</h2>
+          </div>
+        </div>
+        <div class="idevice-diy__body">
+          <p class="idevice-diy__instructions">Pensa en un procés quotidià que encara es faça en paper o de manera manual (una llista de la compra, l'agenda d'un taller, el control d'estoc d'una botiga...). Descriu breument com el digitalitzaries: quines eines, dispositius o programari faries servir i quin avantatge n'obtindries.</p>
+          <textarea class="diy-textarea" placeholder="Escriu ací la teua proposta..." aria-label="Resposta al repte"></textarea>
+          <div class="diy-actions">
+            <button class="diy-reveal-btn" data-diy-reveal="#ra1-example" data-diy-hide-label="Amaga l'exemple">Veure un exemple resolt</button>
+          </div>
+          <div id="ra1-example" class="diy-reveal-panel" hidden>
+            <strong>Exemple:</strong> El control d'estoc en paper d'un magatzem es pot digitalitzar amb una app d'inventari al mòbil o tauleta, connectada al núvol, que actualitza les existències en temps real, genera alertes automàtiques quan un producte s'esgota i permet consultar-lo des de qualsevol dispositiu.
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="footer">
@@ -83,5 +106,6 @@
 
     <script src="./scripts/pdf-slideshow.js"></script>
     <script src="../../../js/menu.js"></script>
+    <script src="../../../js/idevice-diy.js"></script>
   </body>
 </html>
